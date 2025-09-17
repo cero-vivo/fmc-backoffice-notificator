@@ -1,15 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getCurrentConfig, setEnvironment, getCurrentEnvironment } from '../../../config'
+import { getCurrentConfig, setEnvironment } from '../../../config'
 
 // GET: Obtener configuración actual
 export async function GET() {
   try {
     const config = getCurrentConfig()
-    const environment = getCurrentEnvironment()
     
     return NextResponse.json({
       success: true,
-      environment,
+      environment: config.environment,
       config
     })
   } catch (error) {
@@ -37,7 +36,7 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json({
       success: true,
-      environment,
+      environment: config.environment,
       config
     })
     
