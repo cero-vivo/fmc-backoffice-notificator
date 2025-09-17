@@ -24,8 +24,8 @@ const developmentConfig: AppConfig = {
     serviceAccountPath: './service-account-key-dev.json'
   },
   auth: {
-    username: 'admin',
-    password: 'admin123'
+    username: process.env.BASIC_AUTH_USERNAME || 'admin',
+    password: process.env.BASIC_AUTH_PASSWORD || 'admin123'
   },
   notifications: {
     sleepDelay: 100
