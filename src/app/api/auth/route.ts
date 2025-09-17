@@ -1,14 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getCurrentConfig } from '../../../config'
 
 export async function POST(request: NextRequest) {
   try {
     const { username, password } = await request.json()
 
-    const validUsername = process.env.BASIC_AUTH_USERNAME || 'admin'
-    const validPassword = process.env.BASIC_AUTH_PASSWORD || 'admin123'
-
-    if (username === validUsername && password === validPassword) {
-      return NextResponse.json({ success: true })
+    // Usar configuración dinámica
+    const config = getCurrentConfig()
+    if (username === config.auth.username && password === config.auth.password) {
+      return NextResponse.json({ 
+        success: true,
+        environment: config.environment 
+      })
     } else {
       return NextResponse.json(
         { error: 'Credenciales inválidas' },

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function Dashboard() {
   const [tokens, setTokens] = useState('')
@@ -8,6 +8,47 @@ export default function Dashboard() {
   const [body, setBody] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [result, setResult] = useState<any>(null)
+  const [environment, setEnvironment] = useState('development')
+  const [isChangingEnv, setIsChangingEnv] = useState(false)
+
+  // Cargar configuración actual
+  useEffect(() => {
+    loadConfig()
+  }, [])
+
+  const loadConfig = async () => {
+    try {
+      const response = await fetch('/api/config')
+      const data = await response.json()
+      if (data.success) {
+        setEnvironment(data.environment)
+      }
+    } catch (error) {
+      console.error('Error al cargar configuración:', error)
+    }
+  }
+
+  const handleEnvironmentChange = async (newEnv: string) => {
+    setIsChangingEnv(true)
+    try {
+      const response = await fetch('/api/config', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ environment: newEnv })
+      })
+
+      const data = await response.json()
+      if (data.success) {
+        setEnvironment(newEnv)
+      }
+    } catch (error) {
+      console.error('Error al cambiar ambiente:', error)
+    } finally {
+      setIsChangingEnv(false)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -63,15 +104,39 @@ export default function Dashboard() {
         padding: '40px',
         boxShadow: '0 20px 40px rgba(0,0,0,0.1)'
       }}>
-        <h1 style={{
-          textAlign: 'center',
-          color: '#333',
-          marginBottom: '30px',
-          fontSize: '2.5rem',
-          fontWeight: 'bold'
-        }}>
-          📱 Dashboard de Notificaciones Push
-        </h1>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+          <h1 style={{
+            color: '#333',
+            margin: 0,
+            fontSize: '2.5rem',
+            fontWeight: 'bold'
+          }}>
+            📱 Dashboard de Notificaciones Push
+          </h1>
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <label style={{ fontSize: '14px', fontWeight: '600', color: '#555' }}>
+              Ambiente:
+            </label>
+            <select
+              value={environment}
+              onChange={(e) => handleEnvironmentChange(e.target.value)}
+              disabled={isChangingEnv}
+              style={{
+                padding: '8px 12px',
+                borderRadius: '6px',
+                border: '2px solid #e1e5e9',
+                fontSize: '14px',
+                fontWeight: '500',
+                cursor: isChangingEnv ? 'not-allowed' : 'pointer',
+                opacity: isChangingEnv ? 0.7 : 1
+              }}
+            >
+              <option value="development">🔧 Desarrollo</option>
+              <option value="production">🚀 Producción</option>
+            </select>
+          </div>
+        </div>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div>
@@ -210,6 +275,11 @@ export default function Dashboard() {
                 <p style={{ margin: '5px 0', color: '#555' }}>
                   <strong>Fallidos:</strong> {result.failCount}
                 </p>
+                {result.environment && (
+                  <p style={{ margin: '5px 0', color: '#555' }}>
+                    <strong>Ambiente:</strong> {result.environment}
+                  </p>
+                )}
                 
                 {result.failTokens && result.failTokens.length > 0 && (
                   <details style={{ marginTop: '15px' }}>

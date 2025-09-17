@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getCurrentConfig } from './config'
 
 export function middleware(request: NextRequest) {
   // Solo aplicar autenticación a rutas del dashboard
@@ -18,11 +19,9 @@ export function middleware(request: NextRequest) {
     const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii')
     const [username, password] = credentials.split(':')
 
-    // Credenciales hardcodeadas (en producción usar variables de entorno)
-    const validUsername = process.env.BASIC_AUTH_USERNAME || 'admin'
-    const validPassword = process.env.BASIC_AUTH_PASSWORD || 'admin123'
-
-    if (username !== validUsername || password !== validPassword) {
+    // Usar configuración dinámica
+    const config = getCurrentConfig()
+    if (username !== config.auth.username || password !== config.auth.password) {
       return new NextResponse('Credenciales inválidas', {
         status: 401,
         headers: {

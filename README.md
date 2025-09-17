@@ -1,21 +1,23 @@
 # 📱 Push Notifications Dashboard
 
-Dashboard web para enviar notificaciones push a través de Firebase Cloud Messaging (FCM) con autenticación BasicAuth.
+Dashboard web para enviar notificaciones push a través de Firebase Cloud Messaging (FCM) con autenticación BasicAuth y **cambio de ambiente en tiempo de ejecución**.
 
 ## 🚀 Características
 
 - ✅ Interfaz web moderna y responsive
 - ✅ Autenticación BasicAuth
+- ✅ **Cambio de ambiente en tiempo de ejecución** con select simple
 - ✅ Envío masivo de notificaciones push
 - ✅ Manejo de errores y reportes detallados
 - ✅ Integración con Firebase Admin SDK
 - ✅ Soporte para múltiples tokens
+- ✅ Configuración centralizada por ambiente
 
 ## 📋 Requisitos Previos
 
 1. **Node.js** (versión 18 o superior)
 2. **Cuenta de Firebase** con proyecto configurado
-3. **Clave de servicio de Firebase** (archivo JSON)
+3. **Claves de servicio de Firebase** (archivos JSON para desarrollo y producción)
 
 ## 🛠️ Instalación
 
@@ -32,11 +34,13 @@ Dashboard web para enviar notificaciones push a través de Firebase Cloud Messag
 
 3. **Configurar Firebase:**
    - Ve a la consola de Firebase
-   - Selecciona tu proyecto
+   - Selecciona tu proyecto de desarrollo
    - Ve a "Configuración del proyecto" > "Cuentas de servicio"
    - Genera una nueva clave privada
-   - Descarga el archivo JSON
-   - Renómbralo a `service-account-key.json` y colócalo en la raíz del proyecto
+   - Descarga el archivo JSON y renómbralo a `service-account-key-dev.json`
+   
+   - Repite el proceso para tu proyecto de producción
+   - Renombra el archivo a `service-account-key-prod.json`
 
 4. **Configurar variables de entorno:**
    ```bash
@@ -45,12 +49,14 @@ Dashboard web para enviar notificaciones push a través de Firebase Cloud Messag
    
    Edita `.env.local` con tus credenciales:
    ```
+   NODE_ENV=development
    BASIC_AUTH_USERNAME=tu_usuario
    BASIC_AUTH_PASSWORD=tu_contraseña_segura
-   SERVICE_ACCOUNT_PATH_PROD=./service-account-key.json
    ```
 
 ## 🚀 Uso
+
+### Inicio Rápido
 
 1. **Iniciar el servidor de desarrollo:**
    ```bash
@@ -60,15 +66,40 @@ Dashboard web para enviar notificaciones push a través de Firebase Cloud Messag
 2. **Acceder al dashboard:**
    - Abre tu navegador en `http://localhost:3000`
    - Serás redirigido automáticamente al login
-   - Usa las credenciales configuradas en `.env.local`
+   - Usa las credenciales configuradas
 
-3. **Enviar notificaciones:**
-   - Completa el formulario con:
-     - **Título:** Título de la notificación
-     - **Mensaje:** Contenido del mensaje
-     - **Tokens:** Lista de tokens Firebase (uno por línea)
-   - Haz clic en "Enviar Notificaciones"
-   - Revisa el reporte de resultados
+### 🔄 Cambio de Ambiente
+
+**¡Súper simple!** Solo usa el select en la esquina superior derecha del dashboard:
+
+1. **Selecciona el ambiente:**
+   - 🔧 Desarrollo
+   - 🚀 Producción
+
+2. **El cambio se aplica inmediatamente** sin reiniciar el servidor
+
+### 📱 Enviar Notificaciones
+
+1. **Completar el formulario:**
+   - **Título:** Título de la notificación
+   - **Mensaje:** Contenido del mensaje
+   - **Tokens:** Lista de tokens Firebase (uno por línea)
+
+2. **Hacer clic en "Enviar Notificaciones"**
+
+3. **Revisar el reporte de resultados**
+
+## 🔧 Configuración por Ambiente
+
+### Desarrollo
+- **Delay entre notificaciones:** 100ms (más rápido)
+- **Título:** "Dashboard de Notificaciones Push - DEV"
+- **Firebase:** `service-account-key-dev.json`
+
+### Producción
+- **Delay entre notificaciones:** 500ms (más conservador)
+- **Título:** "Dashboard de Notificaciones Push"
+- **Firebase:** `service-account-key-prod.json`
 
 ## 📱 Obtener Tokens Firebase
 
@@ -109,16 +140,21 @@ Messaging.messaging().token { token, error in
 ```
 push-notifications-app/
 ├── src/
+│   ├── config/
+│   │   └── index.ts              # Configuración centralizada
 │   ├── app/
 │   │   ├── api/
-│   │   │   ├── auth/           # API de autenticación
-│   │   │   └── notifications/  # API de notificaciones
-│   │   ├── dashboard/          # Dashboard principal
-│   │   ├── login/              # Página de login
-│   │   └── page.tsx            # Página de inicio
-│   └── middleware.ts           # Middleware de autenticación
-├── service-account-key.json    # Clave de servicio de Firebase
-├── .env.example               # Variables de entorno de ejemplo
+│   │   │   ├── auth/             # API de autenticación
+│   │   │   ├── config/           # API de configuración
+│   │   │   └── notifications/    # API de notificaciones
+│   │   ├── dashboard/
+│   │   │   └── page.tsx          # Dashboard principal con select
+│   │   ├── login/                # Página de login
+│   │   └── page.tsx              # Página de inicio
+│   └── middleware.ts              # Middleware de autenticación
+├── service-account-key-dev.json   # Clave de servicio desarrollo
+├── service-account-key-prod.json # Clave de servicio producción
+├── .env.example                  # Variables de entorno de ejemplo
 └── README.md
 ```
 
@@ -128,13 +164,15 @@ push-notifications-app/
 - **Validación de entrada:** Todos los campos son validados
 - **Manejo de errores:** Errores manejados de forma segura
 - **Rate limiting:** Pausa entre envíos para evitar throttling
+- **Configuración separada:** Ambientes completamente aislados
 
-## �� Consideraciones Importantes
+## 🚨 Consideraciones Importantes
 
-1. **Archivo de clave de servicio:** Nunca subas `service-account-key.json` al repositorio
+1. **Archivos de clave de servicio:** Nunca subas los archivos `service-account-key-*.json` al repositorio
 2. **Credenciales:** Cambia las credenciales por defecto en producción
 3. **Rate limiting:** Firebase tiene límites de envío, considera implementar colas
 4. **Tokens inválidos:** Los tokens pueden expirar, implementa renovación automática
+5. **Cambio de ambiente:** Los cambios se aplican inmediatamente sin reiniciar el servidor
 
 ## 📊 Monitoreo
 
@@ -143,6 +181,7 @@ El dashboard muestra:
 - Número de notificaciones enviadas exitosamente
 - Número de fallos
 - Lista detallada de tokens fallidos
+- **Ambiente actual** en tiempo real
 
 ## 🛠️ Desarrollo
 
@@ -154,7 +193,7 @@ npm run dev
 npm run build
 
 # Iniciar en producción
-npm start
+npm run start
 
 # Linting
 npm run lint
@@ -179,5 +218,5 @@ Si tienes problemas o preguntas:
 1. Revisa la documentación de Firebase
 2. Verifica la configuración de tu proyecto
 3. Revisa los logs del servidor
-4. Abre un issue en el repositorio
-# fmc-backoffice-notificator
+4. Usa el select de ambiente para verificar el ambiente actual
+5. Abre un issue en el repositorio
