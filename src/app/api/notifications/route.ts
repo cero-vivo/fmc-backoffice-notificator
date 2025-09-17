@@ -15,11 +15,11 @@ function getFirebaseConfig(environment: 'development' | 'production') {
       private_key: process.env.FIREBASE_DEV_PRIVATE_KEY?.replace(/\\n/g, '\n'),
       client_email: process.env.FIREBASE_DEV_CLIENT_EMAIL,
       client_id: process.env.FIREBASE_DEV_CLIENT_ID,
-      auth_uri: 'https://accounts.google.com/o/oauth2/auth',
-      token_uri: 'https://oauth2.googleapis.com/token',
-      auth_provider_x509_cert_url: 'https://www.googleapis.com/oauth2/v1/certs',
-      client_x509_cert_url: `https://www.googleapis.com/robot/v1/metadata/x509/${encodeURIComponent(process.env.FIREBASE_DEV_CLIENT_EMAIL || '')}`,
-      universe_domain: 'googleapis.com'
+      auth_uri: process.env.FIREBASE_DEV_AUTH_URI,
+      token_uri: process.env.FIREBASE_DEV_TOKEN_URI,
+      auth_provider_x509_cert_url: process.env.FIREBASE_DEV_AUTH_PROVIDER_X509_CERT_URL,
+      client_x509_cert_url: process.env.FIREBASE_DEV_CLIENT_X509_CERT_URL,
+      universe_domain: process.env.FIREBASE_DEV_UNIVERSE_DOMAIN
     }
   } else {
     return {
@@ -29,11 +29,11 @@ function getFirebaseConfig(environment: 'development' | 'production') {
       private_key: process.env.FIREBASE_PROD_PRIVATE_KEY?.replace(/\\n/g, '\n'),
       client_email: process.env.FIREBASE_PROD_CLIENT_EMAIL,
       client_id: process.env.FIREBASE_PROD_CLIENT_ID,
-      auth_uri: 'https://accounts.google.com/o/oauth2/auth',
-      token_uri: 'https://oauth2.googleapis.com/token',
-      auth_provider_x509_cert_url: 'https://www.googleapis.com/oauth2/v1/certs',
-      client_x509_cert_url: `https://www.googleapis.com/robot/v1/metadata/x509/${encodeURIComponent(process.env.FIREBASE_PROD_CLIENT_EMAIL || '')}`,
-      universe_domain: 'googleapis.com'
+      auth_uri: process.env.FIREBASE_PROD_AUTH_URI,
+      token_uri: process.env.FIREBASE_PROD_TOKEN_URI,
+      auth_provider_x509_cert_url: process.env.FIREBASE_PROD_AUTH_PROVIDER_X509_CERT_URL,
+      client_x509_cert_url: process.env.FIREBASE_PROD_CLIENT_X509_CERT_URL,
+      universe_domain: process.env.FIREBASE_PROD_UNIVERSE_DOMAIN
     }
   }
 }
@@ -105,9 +105,18 @@ export async function POST(request: NextRequest) {
         const response = await messaging.send(message)
         console.log(`✅ Notificación enviada al token ${token}:`, response)
         successNotifications.push(token)
-      } catch (error) {
+      } catch (error: any) {
         console.error(`❌ Error al enviar notificación al token ${token}:`, error)
-        failNotifications.push(token)
+        
+        // Crear objeto de error detallado
+        const errorDetails = {
+          token: token,
+          code: error.code || 'UNKNOWN_ERROR',
+          message: error.message || 'Error desconocido',
+          details: error.details || null
+        }
+        
+        failNotifications.push(errorDetails)
       }
 
       // Usar delay configurado para evitar throttling
@@ -124,10 +133,13 @@ export async function POST(request: NextRequest) {
       environment: config.environment
     })
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('❌ Error en API de notificaciones:', error)
     return NextResponse.json(
-      { error: 'Error interno del servidor' },
+      { 
+        error: 'Error interno del servidor',
+        details: error.message || 'Error desconocido'
+      },
       { status: 500 }
     )
   }

@@ -1,9 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { Settings, Send, AlertCircle, CheckCircle, XCircle, Info } from 'lucide-react'
+import TokenInput from '../../components/TokenInput'
 
 export default function Dashboard() {
-  const [tokens, setTokens] = useState('')
+  const [tokens, setTokens] = useState<string[]>([])
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -56,14 +58,8 @@ export default function Dashboard() {
     setResult(null)
 
     try {
-      // Convertir tokens de texto a array
-      const tokenArray = tokens
-        .split('\n')
-        .map(token => token.trim())
-        .filter(token => token.length > 0)
-
-      if (tokenArray.length === 0) {
-        alert('Por favor ingresa al menos un token')
+      if (tokens.length === 0) {
+        alert('Por favor agrega al menos un token')
         return
       }
 
@@ -73,7 +69,7 @@ export default function Dashboard() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          tokens: tokenArray,
+          tokens,
           title,
           body
         })
@@ -92,30 +88,68 @@ export default function Dashboard() {
   return (
     <div style={{ 
       minHeight: '100vh', 
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      background: '#f9fafb',
       padding: '20px',
       fontFamily: 'system-ui, -apple-system, sans-serif'
     }}>
       <div style={{
-        maxWidth: '800px',
+        maxWidth: '900px',
         margin: '0 auto',
         background: 'white',
         borderRadius: '12px',
         padding: '40px',
-        boxShadow: '0 20px 40px rgba(0,0,0,0.1)'
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
       }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-          <h1 style={{
-            color: '#333',
-            margin: 0,
-            fontSize: '2.5rem',
-            fontWeight: 'bold'
-          }}>
-            📱 Dashboard de Notificaciones Push
-          </h1>
+        {/* Header */}
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          marginBottom: '32px',
+          paddingBottom: '20px',
+          borderBottom: '1px solid #e5e7eb'
+        }}>
+          <div>
+            <h1 style={{
+              color: '#1f2937',
+              margin: 0,
+              fontSize: '2rem',
+              fontWeight: '700',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px'
+            }}>
+              <div style={{
+                width: '40px',
+                height: '40px',
+                background: '#8b5cf6',
+                borderRadius: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                fontSize: '18px',
+                fontWeight: 'bold'
+              }}>
+                N
+              </div>
+              NOUS Push Notifications
+            </h1>
+            <p style={{ 
+              color: '#6b7280', 
+              margin: '4px 0 0 0', 
+              fontSize: '14px' 
+            }}>
+              Sistema de notificaciones push
+            </p>
+          </div>
           
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <label style={{ fontSize: '14px', fontWeight: '600', color: '#555' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <label style={{ 
+              fontSize: '14px', 
+              fontWeight: '600', 
+              color: '#374151' 
+            }}>
               Ambiente:
             </label>
             <select
@@ -125,11 +159,13 @@ export default function Dashboard() {
               style={{
                 padding: '8px 12px',
                 borderRadius: '6px',
-                border: '2px solid #e1e5e9',
+                border: '2px solid #e5e7eb',
                 fontSize: '14px',
                 fontWeight: '500',
                 cursor: isChangingEnv ? 'not-allowed' : 'pointer',
-                opacity: isChangingEnv ? 0.7 : 1
+                opacity: isChangingEnv ? 0.7 : 1,
+                background: 'white',
+                color: '#374151'
               }}
             >
               <option value="development">🔧 Desarrollo</option>
@@ -138,13 +174,15 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          {/* Título */}
           <div>
             <label style={{ 
               display: 'block', 
               marginBottom: '8px', 
               fontWeight: '600',
-              color: '#555'
+              color: '#374151',
+              fontSize: '14px'
             }}>
               Título de la notificación:
             </label>
@@ -157,21 +195,24 @@ export default function Dashboard() {
               style={{
                 width: '100%',
                 padding: '12px',
-                border: '2px solid #e1e5e9',
+                border: '2px solid #e5e7eb',
                 borderRadius: '8px',
                 fontSize: '16px',
                 outline: 'none',
-                transition: 'border-color 0.3s'
+                transition: 'border-color 0.2s',
+                background: 'white'
               }}
             />
           </div>
 
+          {/* Mensaje */}
           <div>
             <label style={{ 
               display: 'block', 
               marginBottom: '8px', 
               fontWeight: '600',
-              color: '#555'
+              color: '#374151',
+              fontSize: '14px'
             }}>
               Mensaje de la notificación:
             </label>
@@ -184,121 +225,170 @@ export default function Dashboard() {
               style={{
                 width: '100%',
                 padding: '12px',
-                border: '2px solid #e1e5e9',
+                border: '2px solid #e5e7eb',
                 borderRadius: '8px',
                 fontSize: '16px',
                 outline: 'none',
                 resize: 'vertical',
-                transition: 'border-color 0.3s'
+                transition: 'border-color 0.2s',
+                background: 'white',
+                fontFamily: 'inherit'
               }}
             />
           </div>
 
-          <div>
-            <label style={{ 
-              display: 'block', 
-              marginBottom: '8px', 
-              fontWeight: '600',
-              color: '#555'
-            }}>
-              Tokens Firebase (uno por línea):
-            </label>
-            <textarea
-              value={tokens}
-              onChange={(e) => setTokens(e.target.value)}
-              placeholder="Pega aquí los tokens Firebase, uno por línea..."
-              required
-              rows={8}
-              style={{
-                width: '100%',
-                padding: '12px',
-                border: '2px solid #e1e5e9',
-                borderRadius: '8px',
-                fontSize: '14px',
-                fontFamily: 'monospace',
-                outline: 'none',
-                resize: 'vertical',
-                transition: 'border-color 0.3s'
-              }}
-            />
-            <small style={{ color: '#666', fontSize: '12px' }}>
-              Ingresa cada token en una línea separada
-            </small>
-          </div>
+          {/* Tokens */}
+          <TokenInput 
+            tokens={tokens}
+            onTokensChange={setTokens}
+          />
 
+          {/* Botón de envío */}
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={isLoading || tokens.length === 0}
             style={{
-              background: isLoading ? '#ccc' : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              background: isLoading || tokens.length === 0 ? '#d1d5db' : '#8b5cf6',
               color: 'white',
               border: 'none',
-              padding: '15px 30px',
+              padding: '16px 32px',
               borderRadius: '8px',
-              fontSize: '18px',
+              fontSize: '16px',
               fontWeight: '600',
-              cursor: isLoading ? 'not-allowed' : 'pointer',
-              transition: 'all 0.3s',
-              marginTop: '10px'
+              cursor: isLoading || tokens.length === 0 ? 'not-allowed' : 'pointer',
+              transition: 'all 0.2s',
+              marginTop: '16px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px'
             }}
           >
-            {isLoading ? '⏳ Enviando...' : '🚀 Enviar Notificaciones'}
+            {isLoading ? (
+              <>
+                <div style={{
+                  width: '16px',
+                  height: '16px',
+                  border: '2px solid transparent',
+                  borderTop: '2px solid white',
+                  borderRadius: '50%',
+                  animation: 'spin 1s linear infinite'
+                }} />
+                Enviando...
+              </>
+            ) : (
+              <>
+                <Send size={18} />
+                Enviar Notificaciones
+              </>
+            )}
           </button>
         </form>
 
+        {/* Resultados */}
         {result && (
           <div style={{
-            marginTop: '30px',
+            marginTop: '32px',
             padding: '20px',
             borderRadius: '8px',
-            background: result.error ? '#fee' : '#efe',
-            border: `2px solid ${result.error ? '#fcc' : '#cfc'}`
+            background: result.error ? '#fef2f2' : '#f0fdf4',
+            border: `1px solid ${result.error ? '#fecaca' : '#bbf7d0'}`
           }}>
-            <h3 style={{ 
-              color: result.error ? '#c33' : '#363',
-              marginBottom: '15px',
-              fontSize: '1.2rem'
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              marginBottom: '16px'
             }}>
-              {result.error ? '❌ Error' : '✅ Resultado'}
-            </h3>
+              {result.error ? (
+                <XCircle size={20} color="#dc2626" />
+              ) : (
+                <CheckCircle size={20} color="#16a34a" />
+              )}
+              <h3 style={{ 
+                color: result.error ? '#dc2626' : '#16a34a',
+                margin: 0,
+                fontSize: '18px',
+                fontWeight: '600'
+              }}>
+                {result.error ? 'Error' : 'Resultado'}
+              </h3>
+            </div>
             
             {result.error ? (
-              <p style={{ color: '#c33', margin: 0 }}>{result.error}</p>
+              <p style={{ color: '#dc2626', margin: 0, fontSize: '14px' }}>
+                {result.error}
+              </p>
             ) : (
               <div>
-                <p style={{ margin: '5px 0', color: '#555' }}>
-                  <strong>Total de tokens:</strong> {result.totalTokens}
-                </p>
-                <p style={{ margin: '5px 0', color: '#555' }}>
-                  <strong>Enviados exitosamente:</strong> {result.successCount}
-                </p>
-                <p style={{ margin: '5px 0', color: '#555' }}>
-                  <strong>Fallidos:</strong> {result.failCount}
-                </p>
-                {result.environment && (
-                  <p style={{ margin: '5px 0', color: '#555' }}>
-                    <strong>Ambiente:</strong> {result.environment}
-                  </p>
-                )}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '16px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Info size={16} color="#6b7280" />
+                    <span style={{ fontSize: '14px', color: '#374151' }}>
+                      <strong>Total:</strong> {result.totalTokens}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <CheckCircle size={16} color="#16a34a" />
+                    <span style={{ fontSize: '14px', color: '#374151' }}>
+                      <strong>Exitosos:</strong> {result.successCount}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <XCircle size={16} color="#dc2626" />
+                    <span style={{ fontSize: '14px', color: '#374151' }}>
+                      <strong>Fallidos:</strong> {result.failCount}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Settings size={16} color="#6b7280" />
+                    <span style={{ fontSize: '14px', color: '#374151' }}>
+                      <strong>Ambiente:</strong> {result.environment}
+                    </span>
+                  </div>
+                </div>
                 
                 {result.failTokens && result.failTokens.length > 0 && (
-                  <details style={{ marginTop: '15px' }}>
-                    <summary style={{ cursor: 'pointer', fontWeight: '600', color: '#c33' }}>
-                      Ver tokens fallidos ({result.failTokens.length})
+                  <details style={{ marginTop: '16px' }}>
+                    <summary style={{ 
+                      cursor: 'pointer', 
+                      fontWeight: '600', 
+                      color: '#dc2626',
+                      fontSize: '14px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px'
+                    }}>
+                      <AlertCircle size={16} />
+                      Ver errores detallados ({result.failTokens.length})
                     </summary>
                     <div style={{ 
-                      marginTop: '10px', 
-                      padding: '10px', 
-                      background: '#f9f9f9', 
-                      borderRadius: '4px',
-                      fontFamily: 'monospace',
-                      fontSize: '12px',
-                      maxHeight: '200px',
-                      overflow: 'auto'
+                      marginTop: '12px', 
+                      padding: '16px', 
+                      background: '#f9fafb', 
+                      borderRadius: '6px',
+                      border: '1px solid #e5e7eb'
                     }}>
-                      {result.failTokens.map((token: string, index: number) => (
-                        <div key={index} style={{ marginBottom: '5px' }}>
-                          {token}
+                      {result.failTokens.map((error: any, index: number) => (
+                        <div key={index} style={{ 
+                          marginBottom: '12px', 
+                          padding: '12px',
+                          background: 'white',
+                          borderRadius: '6px',
+                          border: '1px solid #fecaca'
+                        }}>
+                          <div style={{ 
+                            fontFamily: 'monospace', 
+                            fontSize: '12px',
+                            color: '#374151',
+                            marginBottom: '4px',
+                            wordBreak: 'break-all'
+                          }}>
+                            <strong>Token:</strong> {error.token || 'N/A'}
+                          </div>
+                          <div style={{ fontSize: '12px', color: '#dc2626' }}>
+                            <strong>Error:</strong> {error.code || 'Unknown'} - {error.message || 'Error desconocido'}
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -309,6 +399,13 @@ export default function Dashboard() {
           </div>
         )}
       </div>
+
+      <style jsx>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   )
 }
