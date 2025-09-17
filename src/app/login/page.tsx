@@ -65,28 +65,14 @@ export default function Login() {
       }}>
         {/* Logo y título */}
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <div style={{
-            width: '60px',
-            height: '60px',
-            background: '#8b5cf6',
-            borderRadius: '12px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'white',
-            fontSize: '24px',
-            fontWeight: 'bold',
-            margin: '0 auto 16px auto'
-          }}>
-            N
-          </div>
+          <img src="/Nous-Logo.png" alt="NOUS Logo" style={{ width: '120px', height: 'auto', objectFit: 'contain', marginBottom: '12px' }} />
           <h1 style={{
             color: isDark ? '#e5e7eb' : '#1f2937',
             marginBottom: '8px',
             fontSize: '1.5rem',
             fontWeight: '700'
           }}>
-            NOUS Push Notifications
+            Push Notificator
           </h1>
           <p style={{
             color: isDark ? '#cbd5e1' : '#6b7280',

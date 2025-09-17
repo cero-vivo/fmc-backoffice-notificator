@@ -132,42 +132,10 @@ export default function Dashboard() {
           alignItems: 'center',
           marginBottom: '32px',
           paddingBottom: '20px',
+          gap: "5%",
           borderBottom: `1px solid ${borderColor}`
         }}>
-          <div>
-            <h1 style={{
-              color: textMain,
-              margin: 0,
-              fontSize: '2rem',
-              fontWeight: '700',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px'
-            }}>
-              <div style={{
-                width: '40px',
-                height: '40px',
-                background: '#8b5cf6',
-                borderRadius: '8px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-                fontSize: '18px',
-                fontWeight: 'bold'
-              }}>
-                N
-              </div>
-              NOUS Push Notifications
-            </h1>
-            <p style={{
-              color: textSecondary,
-              margin: '4px 0 0 0',
-              fontSize: '14px'
-            }}>
-              Sistema de notificaciones push
-            </p>
-          </div>
+          <img src="/Nous-Logo.png" alt="NOUS Logo" style={{ width: '120px', height: 'auto', objectFit: 'contain', marginBottom: '12px' }} />
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <label style={{
@@ -434,28 +402,12 @@ export default function Dashboard() {
 
                 {result.failTokens && result.failTokens.length > 0 && (
                   <details style={{ marginTop: '16px' }}>
-                    <summary style={{
-                      cursor: 'pointer',
-                      fontWeight: '600',
-                      color: '#dc2626',
-                      fontSize: '14px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px'
-                    }}>
-                      <AlertCircle size={16} />
-                      Ver errores detallados ({result.failTokens.length})
+                    <summary style={{ cursor: 'pointer', fontWeight: '600', color: '#dc2626', fontSize: '15px', marginBottom: '12px' }}>
+                      Ver detalles de errores
                     </summary>
-                    <div style={{
-                      marginTop: '12px',
-                      padding: '16px',
-                      background: '#f9fafb',
-                      borderRadius: '6px',
-                      border: '1px solid #e5e7eb'
-                    }}>
-                      {result.failTokens.map((error: any, index: number) => (
-                        <div key={index} style={{
-                          marginBottom: '12px',
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '12px' }}>
+                      {result.failTokens.map((error, idx) => (
+                        <div key={idx} style={{
                           padding: '12px',
                           background: 'white',
                           borderRadius: '6px',
