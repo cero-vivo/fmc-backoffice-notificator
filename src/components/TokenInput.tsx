@@ -43,13 +43,15 @@ export default function TokenInput({ tokens, onTokensChange }: TokenInputProps) 
     onTokensChange(uniqueTokens)
   }
 
+  // Detectar dark mode
+  const isDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
   return (
     <div>
       <label style={{ 
         display: 'block', 
         marginBottom: '8px', 
         fontWeight: '600',
-        color: '#374151',
+        color: isDark ? '#e5e7eb' : '#374151',
         fontSize: '14px'
       }}>
         Tokens Firebase:
@@ -81,7 +83,11 @@ export default function TokenInput({ tokens, onTokensChange }: TokenInputProps) 
           disabled={!inputValue.trim()}
           style={{
             padding: '12px',
-            background: inputValue.trim() ? '#8b5cf6' : '#d1d5db',
+            background: inputValue.trim()
+              ? '#8b5cf6'
+              : isDark
+                ? '#23272f' // más oscuro para dark
+                : '#d1d5db',
             color: 'white',
             border: 'none',
             borderRadius: '8px',
@@ -107,7 +113,7 @@ export default function TokenInput({ tokens, onTokensChange }: TokenInputProps) 
         border: '2px solid #e5e7eb',
         borderRadius: '8px',
         padding: '12px',
-        background: '#f9fafb'
+        background: isDark ? '#181a20' : '#f9fafb'
       }}>
         {tokens.length === 0 ? (
           <div style={{

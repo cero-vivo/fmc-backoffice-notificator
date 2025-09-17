@@ -98,33 +98,45 @@ export default function Dashboard() {
     }
   }
 
+  // Detectar si el usuario está en modo dark
+  const isDark = typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
+  const bgMain = isDark ? '#18181b' : '#f9fafb'
+  const bgCard = isDark ? '#23232a' : 'white'
+  const textMain = isDark ? '#f3f4f6' : '#1f2937'
+  const textSecondary = isDark ? '#a1a1aa' : '#6b7280'
+  const borderColor = isDark ? '#3f3f46' : '#e5e7eb'
+  const inputBg = isDark ? '#18181b' : 'white'
+  const inputBorder = isDark ? '#52525b' : '#e5e7eb'
+  const dropdownBg = isDark ? '#23232a' : 'white'
+  const dropdownBorder = isDark ? '#3f3f46' : '#e5e7eb'
+  const dropdownActive = isDark ? '#27272a' : '#f3f4f6'
   return (
-    <div style={{ 
-      minHeight: '100vh', 
-      background: '#f9fafb',
+    <div style={{
+      minHeight: '100vh',
+      background: bgMain,
       padding: '20px',
       fontFamily: 'system-ui, -apple-system, sans-serif'
     }}>
       <div style={{
         maxWidth: '900px',
         margin: '0 auto',
-        background: 'white',
+        background: bgCard,
         borderRadius: '12px',
         padding: '40px',
-        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+        boxShadow: isDark ? '0 4px 16px -2px rgba(0,0,0,0.7)' : '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
       }}>
         {/* Header */}
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'center', 
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
           marginBottom: '32px',
           paddingBottom: '20px',
-          borderBottom: '1px solid #e5e7eb'
+          borderBottom: `1px solid ${borderColor}`
         }}>
           <div>
             <h1 style={{
-              color: '#1f2937',
+              color: textMain,
               margin: 0,
               fontSize: '2rem',
               fontWeight: '700',
@@ -148,20 +160,20 @@ export default function Dashboard() {
               </div>
               NOUS Push Notifications
             </h1>
-            <p style={{ 
-              color: '#6b7280', 
-              margin: '4px 0 0 0', 
-              fontSize: '14px' 
+            <p style={{
+              color: textSecondary,
+              margin: '4px 0 0 0',
+              fontSize: '14px'
             }}>
               Sistema de notificaciones push
             </p>
           </div>
-          
+
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <label style={{ 
-              fontSize: '14px', 
-              fontWeight: '600', 
-              color: '#374151' 
+            <label style={{
+              fontSize: '14px',
+              fontWeight: '600',
+              color: textMain
             }}>
               Ambiente:
             </label>
@@ -175,13 +187,13 @@ export default function Dashboard() {
                   gap: '8px',
                   padding: '8px 12px',
                   borderRadius: '6px',
-                  border: '2px solid #e5e7eb',
+                  border: `2px solid ${borderColor}`,
                   fontSize: '14px',
                   fontWeight: '500',
-                  cursor: isChangingEnv ? 'not-allowed' : 'pointer',
+                  color: textMain,
                   opacity: isChangingEnv ? 0.7 : 1,
-                  background: 'white',
-                  color: '#374151',
+                  background: dropdownBg,
+                  color: textMain,
                   minWidth: '140px'
                 }}
                 onClick={() => setShowEnvDropdown((prev) => !prev)}
@@ -195,10 +207,10 @@ export default function Dashboard() {
                   position: 'absolute',
                   top: '110%',
                   left: 0,
-                  background: 'white',
-                  border: '2px solid #e5e7eb',
+                  background: dropdownBg,
+                  border: `2px solid ${dropdownBorder}`,
                   borderRadius: '8px',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                  boxShadow: isDark ? '0 2px 16px rgba(0,0,0,0.7)' : '0 2px 8px rgba(0,0,0,0.08)',
                   zIndex: 10,
                   minWidth: '140px',
                   overflow: 'hidden'
@@ -210,10 +222,10 @@ export default function Dashboard() {
                       gap: '8px',
                       padding: '10px 16px',
                       cursor: 'pointer',
-                      background: environment === 'development' ? '#f3f4f6' : 'white',
-                      color: '#374151',
+                      background: environment === 'development' ? dropdownActive : dropdownBg,
+                      color: textMain,
                       fontWeight: environment === 'development' ? '600' : '500',
-                      borderBottom: '1px solid #e5e7eb'
+                      borderBottom: `1px solid ${dropdownBorder}`
                     }}
                     onClick={() => { handleEnvironmentChange('development'); setShowEnvDropdown(false); }}
                   >
@@ -226,8 +238,8 @@ export default function Dashboard() {
                       gap: '8px',
                       padding: '10px 16px',
                       cursor: 'pointer',
-                      background: environment === 'production' ? '#f3f4f6' : 'white',
-                      color: '#374151',
+                      background: environment === 'production' ? dropdownActive : dropdownBg,
+                      color: textMain,
                       fontWeight: environment === 'production' ? '600' : '500'
                     }}
                     onClick={() => { handleEnvironmentChange('production'); setShowEnvDropdown(false); }}
@@ -243,11 +255,11 @@ export default function Dashboard() {
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           {/* Título */}
           <div>
-            <label style={{ 
-              display: 'block', 
-              marginBottom: '8px', 
+            <label style={{
+              display: 'block',
+              marginBottom: '8px',
               fontWeight: '600',
-              color: '#374151',
+              color: textMain,
               fontSize: '14px'
             }}>
               Título de la notificación:
@@ -261,23 +273,24 @@ export default function Dashboard() {
               style={{
                 width: '100%',
                 padding: '12px',
-                border: '2px solid #e5e7eb',
+                border: `2px solid ${inputBorder}`,
                 borderRadius: '8px',
                 fontSize: '16px',
                 outline: 'none',
                 transition: 'border-color 0.2s',
-                background: 'white'
+                background: inputBg,
+                color: textMain
               }}
             />
           </div>
 
           {/* Mensaje */}
           <div>
-            <label style={{ 
-              display: 'block', 
-              marginBottom: '8px', 
+            <label style={{
+              display: 'block',
+              marginBottom: '8px',
               fontWeight: '600',
-              color: '#374151',
+              color: isDark ? '#e5e7eb' : '#374151',
               fontSize: '14px'
             }}>
               Mensaje de la notificación:
@@ -291,20 +304,21 @@ export default function Dashboard() {
               style={{
                 width: '100%',
                 padding: '12px',
-                border: '2px solid #e5e7eb',
+                border: `2px solid ${inputBorder}`,
                 borderRadius: '8px',
                 fontSize: '16px',
                 outline: 'none',
                 resize: 'vertical',
                 transition: 'border-color 0.2s',
-                background: 'white',
+                background: inputBg,
+                color: textMain,
                 fontFamily: 'inherit'
               }}
             />
           </div>
 
           {/* Tokens */}
-          <TokenInput 
+          <TokenInput
             tokens={tokens}
             onTokensChange={setTokens}
           />
@@ -314,7 +328,11 @@ export default function Dashboard() {
             type="submit"
             disabled={isLoading || tokens.length === 0}
             style={{
-              background: isLoading || tokens.length === 0 ? '#d1d5db' : '#8b5cf6',
+              background: (isLoading || tokens.length === 0)
+                ? (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+                  ? '#23272f'
+                  : '#d1d5db')
+                : '#8b5cf6',
               color: 'white',
               border: 'none',
               padding: '16px 32px',
@@ -371,7 +389,7 @@ export default function Dashboard() {
               ) : (
                 <CheckCircle size={20} color="#16a34a" />
               )}
-              <h3 style={{ 
+              <h3 style={{
                 color: result.error ? '#dc2626' : '#16a34a',
                 margin: 0,
                 fontSize: '18px',
@@ -380,7 +398,7 @@ export default function Dashboard() {
                 {result.error ? 'Error' : 'Resultado'}
               </h3>
             </div>
-            
+
             {result.error ? (
               <p style={{ color: '#dc2626', margin: 0, fontSize: '14px' }}>
                 {result.error}
@@ -413,12 +431,12 @@ export default function Dashboard() {
                     </span>
                   </div>
                 </div>
-                
+
                 {result.failTokens && result.failTokens.length > 0 && (
                   <details style={{ marginTop: '16px' }}>
-                    <summary style={{ 
-                      cursor: 'pointer', 
-                      fontWeight: '600', 
+                    <summary style={{
+                      cursor: 'pointer',
+                      fontWeight: '600',
                       color: '#dc2626',
                       fontSize: '14px',
                       display: 'flex',
@@ -428,23 +446,23 @@ export default function Dashboard() {
                       <AlertCircle size={16} />
                       Ver errores detallados ({result.failTokens.length})
                     </summary>
-                    <div style={{ 
-                      marginTop: '12px', 
-                      padding: '16px', 
-                      background: '#f9fafb', 
+                    <div style={{
+                      marginTop: '12px',
+                      padding: '16px',
+                      background: '#f9fafb',
                       borderRadius: '6px',
                       border: '1px solid #e5e7eb'
                     }}>
                       {result.failTokens.map((error: any, index: number) => (
-                        <div key={index} style={{ 
-                          marginBottom: '12px', 
+                        <div key={index} style={{
+                          marginBottom: '12px',
                           padding: '12px',
                           background: 'white',
                           borderRadius: '6px',
                           border: '1px solid #fecaca'
                         }}>
-                          <div style={{ 
-                            fontFamily: 'monospace', 
+                          <div style={{
+                            fontFamily: 'monospace',
                             fontSize: '12px',
                             color: '#374151',
                             marginBottom: '4px',
