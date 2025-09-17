@@ -1,36 +1,183 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📱 Push Notifications Dashboard
 
-## Getting Started
+Dashboard web para enviar notificaciones push a través de Firebase Cloud Messaging (FCM) con autenticación BasicAuth.
 
-First, run the development server:
+## 🚀 Características
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- ✅ Interfaz web moderna y responsive
+- ✅ Autenticación BasicAuth
+- ✅ Envío masivo de notificaciones push
+- ✅ Manejo de errores y reportes detallados
+- ✅ Integración con Firebase Admin SDK
+- ✅ Soporte para múltiples tokens
+
+## 📋 Requisitos Previos
+
+1. **Node.js** (versión 18 o superior)
+2. **Cuenta de Firebase** con proyecto configurado
+3. **Clave de servicio de Firebase** (archivo JSON)
+
+## 🛠️ Instalación
+
+1. **Clonar el repositorio:**
+   ```bash
+   git clone <tu-repositorio>
+   cd push-notifications-app
+   ```
+
+2. **Instalar dependencias:**
+   ```bash
+   npm install
+   ```
+
+3. **Configurar Firebase:**
+   - Ve a la consola de Firebase
+   - Selecciona tu proyecto
+   - Ve a "Configuración del proyecto" > "Cuentas de servicio"
+   - Genera una nueva clave privada
+   - Descarga el archivo JSON
+   - Renómbralo a `service-account-key.json` y colócalo en la raíz del proyecto
+
+4. **Configurar variables de entorno:**
+   ```bash
+   cp .env.example .env.local
+   ```
+   
+   Edita `.env.local` con tus credenciales:
+   ```
+   BASIC_AUTH_USERNAME=tu_usuario
+   BASIC_AUTH_PASSWORD=tu_contraseña_segura
+   SERVICE_ACCOUNT_PATH_PROD=./service-account-key.json
+   ```
+
+## 🚀 Uso
+
+1. **Iniciar el servidor de desarrollo:**
+   ```bash
+   npm run dev
+   ```
+
+2. **Acceder al dashboard:**
+   - Abre tu navegador en `http://localhost:3000`
+   - Serás redirigido automáticamente al login
+   - Usa las credenciales configuradas en `.env.local`
+
+3. **Enviar notificaciones:**
+   - Completa el formulario con:
+     - **Título:** Título de la notificación
+     - **Mensaje:** Contenido del mensaje
+     - **Tokens:** Lista de tokens Firebase (uno por línea)
+   - Haz clic en "Enviar Notificaciones"
+   - Revisa el reporte de resultados
+
+## 📱 Obtener Tokens Firebase
+
+Para obtener tokens de dispositivos, necesitas implementar el SDK de Firebase en tu aplicación móvil:
+
+### Android (Kotlin/Java)
+```kotlin
+FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+    if (!task.isSuccessful) {
+        Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+        return@addOnCompleteListener
+    }
+    
+    // Get new FCM registration token
+    val token = task.result
+    Log.d(TAG, "FCM Registration Token: $token")
+    
+    // Enviar token a tu servidor
+    sendTokenToServer(token)
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### iOS (Swift)
+```swift
+Messaging.messaging().token { token, error in
+    if let error = error {
+        print("Error fetching FCM registration token: \(error)")
+    } else if let token = token {
+        print("FCM registration token: \(token)")
+        // Enviar token a tu servidor
+        sendTokenToServer(token)
+    }
+}
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🔧 Estructura del Proyecto
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+push-notifications-app/
+├── src/
+│   ├── app/
+│   │   ├── api/
+│   │   │   ├── auth/           # API de autenticación
+│   │   │   └── notifications/  # API de notificaciones
+│   │   ├── dashboard/          # Dashboard principal
+│   │   ├── login/              # Página de login
+│   │   └── page.tsx            # Página de inicio
+│   └── middleware.ts           # Middleware de autenticación
+├── service-account-key.json    # Clave de servicio de Firebase
+├── .env.example               # Variables de entorno de ejemplo
+└── README.md
+```
 
-## Learn More
+## 🔒 Seguridad
 
-To learn more about Next.js, take a look at the following resources:
+- **Autenticación BasicAuth:** Protege el acceso al dashboard
+- **Validación de entrada:** Todos los campos son validados
+- **Manejo de errores:** Errores manejados de forma segura
+- **Rate limiting:** Pausa entre envíos para evitar throttling
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## �� Consideraciones Importantes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Archivo de clave de servicio:** Nunca subas `service-account-key.json` al repositorio
+2. **Credenciales:** Cambia las credenciales por defecto en producción
+3. **Rate limiting:** Firebase tiene límites de envío, considera implementar colas
+4. **Tokens inválidos:** Los tokens pueden expirar, implementa renovación automática
 
-## Deploy on Vercel
+## 📊 Monitoreo
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+El dashboard muestra:
+- Total de tokens procesados
+- Número de notificaciones enviadas exitosamente
+- Número de fallos
+- Lista detallada de tokens fallidos
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛠️ Desarrollo
+
+```bash
+# Modo desarrollo
+npm run dev
+
+# Construir para producción
+npm run build
+
+# Iniciar en producción
+npm start
+
+# Linting
+npm run lint
+```
+
+## 📝 Licencia
+
+Este proyecto está bajo la Licencia MIT.
+
+## 🤝 Contribuciones
+
+Las contribuciones son bienvenidas. Por favor:
+1. Fork el proyecto
+2. Crea una rama para tu feature
+3. Commit tus cambios
+4. Push a la rama
+5. Abre un Pull Request
+
+## 📞 Soporte
+
+Si tienes problemas o preguntas:
+1. Revisa la documentación de Firebase
+2. Verifica la configuración de tu proyecto
+3. Revisa los logs del servidor
+4. Abre un issue en el repositorio
+# fmc-backoffice-notificator
