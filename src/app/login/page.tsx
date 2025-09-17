@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import { LogIn, User, Lock, AlertCircle } from 'lucide-react'
 
 export default function Login() {
+  // Detectar dark mode
+  const isDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -44,7 +46,7 @@ export default function Login() {
   return (
     <div style={{ 
       minHeight: '100vh', 
-      background: '#f9fafb',
+      background: isDark ? '#181a20' : '#f9fafb',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -52,10 +54,12 @@ export default function Login() {
       fontFamily: 'system-ui, -apple-system, sans-serif'
     }}>
       <div style={{
-        background: 'white',
+        background: isDark ? '#23272f' : 'white',
         borderRadius: '12px',
         padding: '40px',
-        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+        boxShadow: isDark
+          ? '0 4px 12px rgba(0,0,0,0.5)'
+          : '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
         width: '100%',
         maxWidth: '400px'
       }}>
@@ -77,7 +81,7 @@ export default function Login() {
             N
           </div>
           <h1 style={{
-            color: '#1f2937',
+            color: isDark ? '#e5e7eb' : '#1f2937',
             marginBottom: '8px',
             fontSize: '1.5rem',
             fontWeight: '700'
@@ -85,7 +89,7 @@ export default function Login() {
             NOUS Push Notifications
           </h1>
           <p style={{
-            color: '#6b7280',
+            color: isDark ? '#cbd5e1' : '#6b7280',
             fontSize: '14px',
             margin: 0
           }}>
@@ -99,7 +103,7 @@ export default function Login() {
               display: 'block', 
               marginBottom: '8px', 
               fontWeight: '600',
-              color: '#374151',
+              color: isDark ? '#e5e7eb' : '#374151',
               fontSize: '14px'
             }}>
               Usuario:
@@ -129,7 +133,8 @@ export default function Login() {
                   fontSize: '16px',
                   outline: 'none',
                   transition: 'border-color 0.2s',
-                  background: 'white'
+                  background: isDark ? '#23272f' : 'white',
+                  color: isDark ? '#e5e7eb' : undefined
                 }}
               />
             </div>
@@ -140,7 +145,7 @@ export default function Login() {
               display: 'block', 
               marginBottom: '8px', 
               fontWeight: '600',
-              color: '#374151',
+              color: isDark ? '#e5e7eb' : '#374151',
               fontSize: '14px'
             }}>
               Contraseña:
@@ -170,7 +175,8 @@ export default function Login() {
                   fontSize: '16px',
                   outline: 'none',
                   transition: 'border-color 0.2s',
-                  background: 'white'
+                  background: isDark ? '#23272f' : 'white',
+                  color: isDark ? '#e5e7eb' : undefined
                 }}
               />
             </div>
@@ -197,7 +203,9 @@ export default function Login() {
             type="submit"
             disabled={isLoading}
             style={{
-              background: isLoading ? '#d1d5db' : '#8b5cf6',
+              background: isLoading
+                ? (isDark ? '#23272f' : '#d1d5db')
+                : '#8b5cf6',
               color: 'white',
               border: 'none',
               padding: '14px',
@@ -233,22 +241,7 @@ export default function Login() {
           </button>
         </form>
 
-        <div style={{
-          marginTop: '24px',
-          padding: '16px',
-          background: '#f0f9ff',
-          borderRadius: '8px',
-          fontSize: '14px',
-          color: '#374151'
-        }}>
-          <div style={{ fontWeight: '600', marginBottom: '8px' }}>
-            Credenciales por defecto:
-          </div>
-          <div style={{ fontFamily: 'monospace', fontSize: '13px' }}>
-            Usuario: <span style={{ color: '#8b5cf6', fontWeight: '600' }}>admin</span><br />
-            Contraseña: <span style={{ color: '#8b5cf6', fontWeight: '600' }}>admin123</span>
-          </div>
-        </div>
+      
       </div>
 
       <style jsx>{`
