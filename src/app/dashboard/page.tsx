@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Settings, Send, AlertCircle, CheckCircle, XCircle, Info } from 'lucide-react'
+import { Settings, Send, AlertCircle, CheckCircle, XCircle, Info, Wrench, Rocket } from 'lucide-react'
 import TokenInput from '../../components/TokenInput'
 
 export default function Dashboard() {
@@ -12,6 +12,19 @@ export default function Dashboard() {
   const [result, setResult] = useState<any>(null)
   const [environment, setEnvironment] = useState('development')
   const [isChangingEnv, setIsChangingEnv] = useState(false)
+  const [showEnvDropdown, setShowEnvDropdown] = useState(false)
+  // Cerrar dropdown al hacer click fuera
+  useEffect(() => {
+    if (!showEnvDropdown) return
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement
+      if (!target.closest('[data-env-dropdown]')) {
+        setShowEnvDropdown(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [showEnvDropdown])
 
   // Cargar configuración actual
   useEffect(() => {
@@ -152,25 +165,78 @@ export default function Dashboard() {
             }}>
               Ambiente:
             </label>
-            <select
-              value={environment}
-              onChange={(e) => handleEnvironmentChange(e.target.value)}
-              disabled={isChangingEnv}
-              style={{
-                padding: '8px 12px',
-                borderRadius: '6px',
-                border: '2px solid #e5e7eb',
-                fontSize: '14px',
-                fontWeight: '500',
-                cursor: isChangingEnv ? 'not-allowed' : 'pointer',
-                opacity: isChangingEnv ? 0.7 : 1,
-                background: 'white',
-                color: '#374151'
-              }}
-            >
-              <option value="development">🔧 Desarrollo</option>
-              <option value="production">🚀 Producción</option>
-            </select>
+            <div style={{ position: 'relative' }} data-env-dropdown>
+              <button
+                type="button"
+                disabled={isChangingEnv}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '8px 12px',
+                  borderRadius: '6px',
+                  border: '2px solid #e5e7eb',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  cursor: isChangingEnv ? 'not-allowed' : 'pointer',
+                  opacity: isChangingEnv ? 0.7 : 1,
+                  background: 'white',
+                  color: '#374151',
+                  minWidth: '140px'
+                }}
+                onClick={() => setShowEnvDropdown((prev) => !prev)}
+              >
+                {environment === 'development' ? <Wrench size={16} /> : <Rocket size={16} />}
+                {environment === 'development' ? 'Desarrollo' : 'Producción'}
+                <Settings size={16} style={{ marginLeft: 'auto' }} />
+              </button>
+              {showEnvDropdown && (
+                <div style={{
+                  position: 'absolute',
+                  top: '110%',
+                  left: 0,
+                  background: 'white',
+                  border: '2px solid #e5e7eb',
+                  borderRadius: '8px',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                  zIndex: 10,
+                  minWidth: '140px',
+                  overflow: 'hidden'
+                }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      padding: '10px 16px',
+                      cursor: 'pointer',
+                      background: environment === 'development' ? '#f3f4f6' : 'white',
+                      color: '#374151',
+                      fontWeight: environment === 'development' ? '600' : '500',
+                      borderBottom: '1px solid #e5e7eb'
+                    }}
+                    onClick={() => { handleEnvironmentChange('development'); setShowEnvDropdown(false); }}
+                  >
+                    <Wrench size={16} /> Desarrollo
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      padding: '10px 16px',
+                      cursor: 'pointer',
+                      background: environment === 'production' ? '#f3f4f6' : 'white',
+                      color: '#374151',
+                      fontWeight: environment === 'production' ? '600' : '500'
+                    }}
+                    onClick={() => { handleEnvironmentChange('production'); setShowEnvDropdown(false); }}
+                  >
+                    <Rocket size={16} /> Producción
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
