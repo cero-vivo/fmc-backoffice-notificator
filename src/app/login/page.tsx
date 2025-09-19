@@ -72,14 +72,6 @@ export default function Login() {
             Push Notificator
           </h1>
           <p style={{
-            color: 'var(--on-surface)',
-            fontSize: '14px',
-            margin: 0,
-            opacity: 0.8
-          }}>
-            Inicia sesión para acceder al dashboard
-          </p>
-          <p style={{
             color: 'var(--neutral)',
             fontSize: '12px',
             margin: '8px 0 0 0',
@@ -116,7 +108,7 @@ export default function Login() {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="admin"
+                placeholder="usuario"
                 required
                 style={{
                   width: '100%',
@@ -160,7 +152,7 @@ export default function Login() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="admin123"
+                placeholder="contraseña"
                 required
                 style={{
                   width: '100%',

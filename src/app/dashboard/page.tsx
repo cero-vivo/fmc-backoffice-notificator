@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Settings, Send, CheckCircle, XCircle, Info, Wrench, Rocket } from 'lucide-react'
+import { Settings, Send, CheckCircle, XCircle, Info, Wrench, Rocket, LogOut, Trash2, StopCircle } from 'lucide-react'
 import TokenInput from '../../components/TokenInput'
 
 export default function Dashboard() {
@@ -39,6 +39,10 @@ export default function Dashboard() {
     successTokens: [],
     failTokens: []
   })
+  
+  // Estado para control de cancelación
+  const [abortController, setAbortController] = useState<AbortController | null>(null)
+  const [isCancelling, setIsCancelling] = useState(false)
   // Cerrar dropdown al hacer click fuera
   useEffect(() => {
     if (!showEnvDropdown) return
@@ -91,10 +95,65 @@ export default function Dashboard() {
     }
   }
 
+  // Función para cerrar sesión
+  const handleLogout = async () => {
+    if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+      try {
+        // Limpiar cualquier proceso en curso
+        if (abortController) {
+          abortController.abort()
+        }
+        
+        // Redirigir a logout
+        window.location.href = '/login'
+      } catch (error) {
+        console.error('Error al cerrar sesión:', error)
+      }
+    }
+  }
+
+  // Función para limpiar tokens
+  const handleClearTokens = () => {
+    if (tokens.length === 0) return
+    
+    if (confirm(`¿Estás seguro de que quieres eliminar todos los ${tokens.length} tokens?`)) {
+      setTokens([])
+      setResult(null)
+    }
+  }
+
+  // Función para detener envío
+  const handleStopSending = () => {
+    if (abortController && progress.isActive && !isCancelling) {
+      if (confirm('¿Estás seguro de que quieres detener el envío en progreso?')) {
+        try {
+          setIsCancelling(true)
+          abortController.abort()
+          
+          // Dar tiempo para que se procese la cancelación
+          setTimeout(() => {
+            setAbortController(null)
+            setIsLoading(false)
+            setIsCancelling(false)
+            setProgress(prev => ({ ...prev, isActive: false }))
+            setResult({
+              error: `Envío cancelado por el usuario. Se procesaron ${progress.processed} de ${progress.total} tokens.`
+            })
+          }, 100)
+        } catch {
+          // Ignorar errores al cancelar - es comportamiento esperado
+          console.log('Envío cancelado correctamente')
+          setIsCancelling(false)
+        }
+      }
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     setResult(null)
+    setIsCancelling(false)
     
     // Reiniciar estados de progreso
     setProgress({
@@ -108,6 +167,10 @@ export default function Dashboard() {
       successTokens: [],
       failTokens: []
     })
+
+    // Crear nuevo AbortController para esta operación
+    const controller = new AbortController()
+    setAbortController(controller)
 
     try {
       if (tokens.length === 0) {
@@ -124,7 +187,8 @@ export default function Dashboard() {
           tokens,
           title,
           body
-        })
+        }),
+        signal: controller.signal
       })
 
       if (!response.ok) {
@@ -143,6 +207,12 @@ export default function Dashboard() {
         
         if (done) {
           setProgress(prev => ({ ...prev, isActive: false }))
+          break
+        }
+
+        // Verificar si fue cancelado
+        if (controller.signal.aborted) {
+          reader.cancel()
           break
         }
 
@@ -191,12 +261,23 @@ export default function Dashboard() {
         }
       }
 
-    } catch (error) {
-      console.error('Error:', error)
-      setResult({ error: 'Error al enviar notificaciones' })
-      setProgress(prev => ({ ...prev, isActive: false }))
+    } catch (error: unknown) {
+      if ((error as Error).name === 'AbortError') {
+        console.log('Envío cancelado por el usuario')
+        // No mostrar error si fue cancelación intencional
+        if (!abortController?.signal.aborted) {
+          setResult({
+            error: `Envío cancelado. Se procesaron ${progress.processed} de ${progress.total} tokens.`
+          })
+        }
+      } else {
+        console.error('Error:', error)
+        setResult({ error: 'Error al enviar notificaciones' })
+        setProgress(prev => ({ ...prev, isActive: false }))
+      }
     } finally {
       setIsLoading(false)
+      setAbortController(null)
     }
   }
 
@@ -220,11 +301,12 @@ export default function Dashboard() {
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'center',
+          alignItems: 'flex-start',
           marginBottom: '32px',
           paddingBottom: '20px',
-          gap: "5%",
-          borderBottom: '1px solid var(--neutral)'
+          gap: '16px',
+          borderBottom: '1px solid var(--neutral)',
+          flexWrap: 'wrap'
         }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
             <img src="/Bizland.png" alt="BIZLAND Logo" style={{ width: '120px', height: 'auto', objectFit: 'contain', marginBottom: '4px' }} />
@@ -318,6 +400,37 @@ export default function Dashboard() {
                 </div>
               )}
             </div>
+
+            {/* Botón cerrar sesión */}
+            <button
+              type="button"
+              onClick={handleLogout}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '8px 12px',
+                borderRadius: '6px',
+                border: '2px solid var(--error)',
+                fontSize: '14px',
+                fontWeight: '500',
+                color: 'var(--error)',
+                background: 'transparent',
+                cursor: 'pointer',
+                transition: 'all 0.2s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'var(--error)'
+                e.currentTarget.style.color = 'white'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent'
+                e.currentTarget.style.color = 'var(--error)'
+              }}
+            >
+              <LogOut size={16} />
+              Cerrar Sesión
+            </button>
           </div>
         </div>
 
@@ -391,10 +504,63 @@ export default function Dashboard() {
           </div>
 
           {/* Tokens */}
-          <TokenInput
-            tokens={tokens}
-            onTokensChange={setTokens}
-          />
+          <div>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '8px'
+            }}>
+              <label style={{
+                fontWeight: '600',
+                color: 'var(--on-surface)',
+                fontSize: '14px'
+              }}>
+                Tokens de dispositivos:
+              </label>
+              {tokens.length > 0 && (
+                <button
+                  type="button"
+                  onClick={handleClearTokens}
+                  disabled={isLoading}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    padding: '6px 10px',
+                    borderRadius: '6px',
+                    border: '1px solid var(--error)',
+                    fontSize: '12px',
+                    fontWeight: '500',
+                    color: 'var(--error)',
+                    background: 'transparent',
+                    cursor: isLoading ? 'not-allowed' : 'pointer',
+                    transition: 'all 0.2s',
+                    opacity: isLoading ? 0.5 : 1
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isLoading) {
+                      e.currentTarget.style.background = 'var(--error)'
+                      e.currentTarget.style.color = 'white'
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isLoading) {
+                      e.currentTarget.style.background = 'transparent'
+                      e.currentTarget.style.color = 'var(--error)'
+                    }
+                  }}
+                >
+                  <Trash2 size={14} />
+                  Limpiar ({tokens.length})
+                </button>
+              )}
+            </div>
+            <TokenInput
+              tokens={tokens}
+              onTokensChange={setTokens}
+            />
+          </div>
 
           {/* Botón de envío */}
           <button
@@ -469,13 +635,52 @@ export default function Dashboard() {
                   <Send size={18} />
                   Enviando notificaciones...
                 </h4>
-                <span style={{
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  color: 'var(--on-surface)'
-                }}>
-                  {progress.processed} / {progress.total}
-                </span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <span style={{
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    color: 'var(--on-surface)'
+                  }}>
+                    {progress.processed} / {progress.total}
+                  </span>
+                  
+                  {/* Botón detener envío */}
+                  <button
+                    type="button"
+                    onClick={handleStopSending}
+                    disabled={isCancelling}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      padding: '6px 12px',
+                      borderRadius: '6px',
+                      border: '2px solid var(--error)',
+                      fontSize: '12px',
+                      fontWeight: '600',
+                      color: isCancelling ? '#999' : 'var(--error)',
+                      background: 'transparent',
+                      cursor: isCancelling ? 'not-allowed' : 'pointer',
+                      transition: 'all 0.2s',
+                      opacity: isCancelling ? 0.6 : 1
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isCancelling) {
+                        e.currentTarget.style.background = 'var(--error)'
+                        e.currentTarget.style.color = 'white'
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isCancelling) {
+                        e.currentTarget.style.background = 'transparent'
+                        e.currentTarget.style.color = 'var(--error)'
+                      }
+                    }}
+                  >
+                    <StopCircle size={14} />
+                    {isCancelling ? 'Cancelando...' : 'Detener'}
+                  </button>
+                </div>
               </div>
 
               {/* Barra de progreso visual */}
