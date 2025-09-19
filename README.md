@@ -102,9 +102,8 @@ Si necesitan ayuda con la configuración o tienen preguntas sobre el código, no
 
 **¡Que tengan excelentes desarrollos!** 
 
-*Con cariño,*  
+*Made with 💙 for the Bizland Mobile Team*
+
 **Luis Espinoza** 🥷 💙
 
----
 
-*Made with 💙 for the Bizland Mobile Team*
