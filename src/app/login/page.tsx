@@ -81,6 +81,15 @@ export default function Login() {
           }}>
             Inicia sesión para acceder al dashboard
           </p>
+          <p style={{
+            color: 'var(--neutral)',
+            fontSize: '12px',
+            margin: '8px 0 0 0',
+            opacity: 0.7,
+            fontStyle: 'italic'
+          }}>
+            By Luis Espinoza
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>

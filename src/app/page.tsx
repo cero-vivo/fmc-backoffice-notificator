@@ -72,6 +72,15 @@ export default function Home() {
           <Loader2 size={20} style={{ animation: 'spin 1s linear infinite' }} />
           <span style={{ fontSize: '14px' }}>Cargando</span>
         </div>
+        <p style={{
+          color: 'var(--neutral)',
+          fontSize: '12px',
+          margin: '16px 0 0 0',
+          opacity: 0.6,
+          fontStyle: 'italic'
+        }}>
+          By Luis Espinoza
+        </p>
       </div>
 
       <style jsx>{`

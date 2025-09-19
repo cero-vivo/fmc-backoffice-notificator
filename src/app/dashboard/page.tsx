@@ -124,7 +124,18 @@ export default function Dashboard() {
           gap: "5%",
           borderBottom: '1px solid var(--neutral)'
         }}>
-          <img src="/Bizland.png" alt="BIZLAND Logo" style={{ width: '120px', height: 'auto', objectFit: 'contain', marginBottom: '12px' }} />
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+            <img src="/Bizland.png" alt="BIZLAND Logo" style={{ width: '120px', height: 'auto', objectFit: 'contain', marginBottom: '4px' }} />
+            <p style={{
+              color: 'var(--neutral)',
+              fontSize: '11px',
+              margin: 0,
+              opacity: 0.6,
+              fontStyle: 'italic'
+            }}>
+              By Luis Espinoza
+            </p>
+          </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <label style={{
