@@ -312,7 +312,7 @@ export default function Dashboard() {
 					borderBottom: '1px solid var(--neutral)',
 					flexWrap: 'wrap'
 				}}>
-					<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+					<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 						<img src="/Bizland.png" alt="BIZLAND Logo" style={{ width: '120px', height: 'auto', objectFit: 'contain', marginBottom: '4px' }} />
 						<p style={{
 							color: 'var(--neutral)',
@@ -520,7 +520,7 @@ export default function Dashboard() {
 								color: 'var(--on-surface)',
 								fontSize: '14px'
 							}}>
-								Tokens de dispositivos:
+
 							</label>
 							{tokens.length > 0 && (
 								<button
