@@ -61,24 +61,7 @@ export default function Login() {
       }}>
         {/* Logo y título */}
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <img src="/Bizland.png" alt="BIZLAND Logo" style={{ width: '120px', height: 'auto', objectFit: 'contain', marginBottom: '12px' }} />
-          <h1 style={{
-            color: 'var(--primary)',
-            marginBottom: '8px',
-            fontSize: '1.5rem',
-            fontWeight: '700'
-          }}>
-            Push Notificator
-          </h1>
-          <p style={{
-            color: 'var(--neutral)',
-            fontSize: '12px',
-            margin: '8px 0 0 0',
-            opacity: 0.7,
-            fontStyle: 'italic'
-          }}>
-            By Luis Espinoza
-          </p>
+          <img src="/Bizland.png" alt="BIZLAND Logo" style={{ width: '220px', height: 'auto', objectFit: 'contain', marginBottom: '12px' }} />
         </div>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -222,8 +205,8 @@ export default function Login() {
             className="btn-primary"
             style={{
               background: isLoading
-                ? 'var(--neutral)'
-                : 'var(--primary)',
+                ? 'var(--on-secondary)'
+                : 'var(--on-secondary)',
               color: 'var(--on-primary)',
               border: 'none',
               padding: '14px',

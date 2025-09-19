@@ -1,10 +1,9 @@
 # Push Notifications App -  Para el Equipo Móvil de Bizland
 
-¡Hola equipo!
 
-Con mucho cariño les comparto esta aplicación de notificaciones push que desarrolle especialmente para el equipo mobile de Bizland. Espero que sea de gran utilidad.
+Aplicación web para enviar notificaciones push a dispositivos móviles Android/iOS usando Firebase Cloud Messaging (FCM). Permite gestionar tokens, seleccionar ambiente (desarrollo/producción), redactar mensajes y enviarlos de forma masiva, con reportes de éxito y error.
 
-**Por Luis Espinoza** 🥷
+**Iniciado por Luis Espinoza** 🥷
 
 ---
 
@@ -103,7 +102,4 @@ Si necesitan ayuda con la configuración o tienen preguntas sobre el código, no
 **¡Que tengan excelentes desarrollos!** 
 
 *Made with 💙 for the Bizland Mobile Team*
-
-**Luis Espinoza** 🥷 
-
 
