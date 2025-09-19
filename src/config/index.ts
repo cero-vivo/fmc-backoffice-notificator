@@ -2,54 +2,45 @@ export type Environment = 'development' | 'production'
 
 export interface AppConfig {
   environment: Environment
-  firebase: {
-    serviceAccountPath: string
-  }
   auth: {
-    username: string
-    password: string
+    username: string | undefined
+    password: string | undefined
   }
   notifications: {
-    sleepDelay: number
+    sleepDelay: number | undefined
   }
   ui: {
-    title: string
+    title: string | undefined
   }
 }
 
 // Configuración base para desarrollo
 const developmentConfig: AppConfig = {
   environment: 'development',
-  firebase: {
-    serviceAccountPath: './service-account-key-dev.json'
-  },
   auth: {
-    username: process.env.BASIC_AUTH_USERNAME || 'admin',
-    password: process.env.BASIC_AUTH_PASSWORD || 'admin123'
+    username: process.env.BASIC_AUTH_USERNAME,
+    password: process.env.BASIC_AUTH_PASSWORD
   },
   notifications: {
     sleepDelay: 100
   },
   ui: {
-    title: '📱 Dashboard de Notificaciones Push - DEV'
+    title: 'Dashboard de Notificaciones Push - DEV'
   }
 }
 
 // Configuración base para producción
 const productionConfig: AppConfig = {
   environment: 'production',
-  firebase: {
-    serviceAccountPath: './service-account-key-prod.json'
-  },
   auth: {
-    username: process.env.BASIC_AUTH_USERNAME || 'admin',
-    password: process.env.BASIC_AUTH_PASSWORD || 'admin123'
+    username: process.env.BASIC_AUTH_USERNAME,
+    password: process.env.BASIC_AUTH_PASSWORD
   },
   notifications: {
     sleepDelay: 500
   },
   ui: {
-    title: '📱 Dashboard de Notificaciones Push'
+    title: 'Dashboard de Notificaciones Push'
   }
 }
 

@@ -135,7 +135,7 @@ export default function Dashboard() {
           gap: "5%",
           borderBottom: `1px solid ${borderColor}`
         }}>
-          <img src="/Nous-Logo.png" alt="NOUS Logo" style={{ width: '120px', height: 'auto', objectFit: 'contain', marginBottom: '12px' }} />
+          <img src="/Bizland.png" alt="BIZLAND Logo" style={{ width: '120px', height: 'auto', objectFit: 'contain', marginBottom: '12px' }} />
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <label style={{

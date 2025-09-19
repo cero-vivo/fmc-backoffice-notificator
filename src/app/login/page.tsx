@@ -65,7 +65,7 @@ export default function Login() {
       }}>
         {/* Logo y título */}
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <img src="/Nous-Logo.png" alt="NOUS Logo" style={{ width: '120px', height: 'auto', objectFit: 'contain', marginBottom: '12px' }} />
+          <img src="/Bizland.png" alt="BIZLAND Logo" style={{ width: '120px', height: 'auto', objectFit: 'contain', marginBottom: '12px' }} />
           <h1 style={{
             color: isDark ? '#e5e7eb' : '#1f2937',
             marginBottom: '8px',
