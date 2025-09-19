@@ -4,13 +4,13 @@
 
 Con mucho cariño les comparto esta aplicación de notificaciones push desarrollada especialmente para el equipo móvil de Bizland. Espero que sea de gran utilidad para sus proyectos.
 
-**Por Luis Espinoza** ❤️
+**Por Luis Espinoza** 🥷
 
 ---
 
 ## ✨ ¿Qué es esta aplicación?
 
-Una aplicación web completa para gestionar y enviar notificaciones push a dispositivos móviles usando Firebase Cloud Messaging (FCM). Está diseñada con los colores corporativos de Bizland y lista para usar en múltiples ambientes.
+Una aplicación web completa para gestionar y enviar notificaciones push a dispositivos móviles usando Firebase Cloud Messaging (FCM). Está diseñada con los colores corporativos de Bizland y lista para usar en ambientes de producción y desarrollo.
 
 ## 🎨 Características Principales
 
@@ -35,15 +35,10 @@ Una aplicación web completa para gestionar y enviar notificaciones push a dispo
 
 ### 1. Instalar dependencias
 ```bash
-npm install
+bun install
 ```
 
-### 2. Configurar Firebase
-Coloca tus archivos de service account en la raíz:
-- `service-account-key-dev.json` (desarrollo)
-- `service-account-key-prod.json` (producción)
-
-### 3. Variables de entorno
+### 2. Variables de entorno
 Crea `.env.local`:
 ```env
 NEXT_PUBLIC_APP_ENV=development
@@ -51,9 +46,10 @@ LOGIN_USERNAME=admin
 LOGIN_PASSWORD=tu-password-seguro
 ```
 
+
 ### 4. Ejecutar en desarrollo
 ```bash
-npm run dev
+bun dev
 ```
 
 ¡Y listo! La app estará disponible en `http://localhost:3000` 🎉
@@ -61,22 +57,11 @@ npm run dev
 ## 🚀 Scripts Disponibles
 
 ```bash
-npm run dev      # Modo desarrollo con Turbopack
-npm run build    # Compilar para producción  
-npm run start    # Ejecutar versión de producción
-npm run lint     # Verificar código
+bun dev      # Modo desarrollo con Turbopack
+bun build    # Compilar para producción  
+bun start    # Ejecutar versión de producción
+bun lint     # Verificar código
 ```
-
-## 🎨 Colores de Bizland Incluidos
-
-El diseño utiliza la paleta oficial de Bizland:
-
-- **Primary Blue**: `hsl(217, 100%, 36.7%)` - El azul característico de Bizland
-- **Secondary Teal**: `#3CDBC0` - Verde azulado para acentos
-- **Surface**: `#F5F9FF` - Fondo suave y profesional
-- **Success**: `#10B981` - Verde para confirmaciones
-- **Error**: `#EF4444` - Rojo para errores
-- **Warning**: `#F59E0B` - Naranja para advertencias
 
 ## 📱 Cómo Usar
 
@@ -86,47 +71,15 @@ El diseño utiliza la paleta oficial de Bizland:
 4. **Crear notificación**: Escribe título y mensaje
 5. **Enviar**: ¡Presiona enviar y ve los resultados!
 
-## 🏗️ Estructura del Proyecto
-
-```
-src/
-├── app/
-│   ├── api/           # Endpoints del backend
-│   ├── dashboard/     # Panel principal
-│   ├── login/         # Página de autenticación
-│   └── layout.tsx     # Layout principal
-├── components/
-│   └── TokenInput.tsx # Componente para gestionar tokens
-└── config/
-    └── index.ts       # Configuración y colores
-```
-
-## � Consejos para el Equipo
-
-- **Testing**: Usa el ambiente de desarrollo para pruebas
-- **Tokens**: Los tokens FCM se pueden obtener desde las apps móviles
-- **Múltiples envíos**: La app maneja lotes grandes automáticamente
-- **Errores**: Los detalles de errores se muestran para debugging
-- **Seguridad**: Cambia las credenciales de login en producción
-
 ## 🤝 Colaboración
 
-Este proyecto está diseñado para crecer con el equipo. Si necesitan nuevas características o tienen ideas de mejora, ¡estoy disponible para colaborar!
+Este proyecto está diseñado para crecer con el equipo.
 
-**Funcionalidades futuras que podríamos agregar**:
-- 📊 Dashboard con métricas avanzadas
-- 📅 Programación de notificaciones
-- 👥 Gestión de usuarios múltiples
-- 🔔 Templates de notificaciones
-- 📈 Analytics de engagement
-
-## 🙏 Agradecimientos
-
-Gracias al equipo móvil de Bizland por la oportunidad de contribuir con esta herramienta. Espero que les sea muy útil y facilite su trabajo diario.
+Espero que les sea muy útil y facilite el trabajo diario.
 
 ---
 
-**¡Que tengan excelentes desarrollos!** 🚀
+**¡Que tengan excelentes desarrollos!** 
 
 *Con cariño,*  
 **Luis Espinoza** 💙
@@ -136,5 +89,6 @@ Gracias al equipo móvil de Bizland por la oportunidad de contribuir con esta he
 ### 📞 Contacto
 
 Si necesitan ayuda con la configuración o tienen preguntas sobre el código, no duden en contactarme. ¡Estoy aquí para apoyar! 
+Luis Espinoza.
 
 *Made with ❤️ for the Bizland Mobile Team*
