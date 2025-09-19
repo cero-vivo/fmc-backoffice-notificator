@@ -205,8 +205,8 @@ export default function Login() {
             className="btn-primary"
             style={{
               background: isLoading
-                ? 'var(--on-secondary)'
-                : 'var(--on-secondary)',
+                ? 'var(--button-disabled)'
+                : 'var(--button-enabled)',
               color: 'var(--on-primary)',
               border: 'none',
               padding: '14px',

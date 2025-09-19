@@ -87,8 +87,8 @@ export default function TokenInput({ tokens, onTokensChange }: TokenInputProps) 
           style={{
             padding: '12px',
             background: inputValue.trim()
-              ? 'var(--on-secondary)'
-              : 'var(--neutral)',
+              ? 'var(--button-enabled)'
+              : 'var(--button-disabled)',
             color: inputValue.trim()
               ? 'var(--on-primary)'
               : 'var(--on-neutral)',

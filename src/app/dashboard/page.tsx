@@ -313,7 +313,7 @@ export default function Dashboard() {
 					flexWrap: 'wrap'
 				}}>
 					<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-						<img src="/Bizland.png" alt="BIZLAND Logo" style={{ width: '120px', height: 'auto', objectFit: 'contain', marginBottom: '4px' }} />
+						<img src="/Bizland.png" alt="BIZLAND Logo" style={{ width: '220px', height: 'auto', objectFit: 'contain', marginBottom: '4px' }} />
 					</div>
 
 					<div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -562,9 +562,9 @@ export default function Dashboard() {
 						type="submit"
 						disabled={isLoading || tokens.length === 0}
 						style={{
-							background: (isLoading || tokens.length === 0)
-								? 'var(--neutral)'
-								: 'var(--on-secondary)',
+											background: (isLoading || tokens.length === 0)
+												? 'var(--button-disabled)'
+												: 'var(--button-enabled)',
 							color: 'white',
 							border: 'none',
 							padding: '16px 32px',

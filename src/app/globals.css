@@ -1,5 +1,7 @@
 
 :root {
+  --button-disabled: #e0e0e0;
+  --button-enabled: #041c2c;
   /* Colores originales de Next.js */
   --background: #ffffff;
   --foreground: #171717;
@@ -32,12 +34,14 @@
     --background: #0a0a0a;
     --foreground: #ededed;
     
-    /* En modo oscuro, mantenemos los colores principales de Bizland
-       pero ajustamos algunos para mejor contraste */
-    --bizland-background: #041c2c;
-    --on-background: #fff;
-    --surface: #0a1929;
-    --on-surface: #fff;
+   /* En modo oscuro, mantenemos los colores principales de Bizland
+     pero ajustamos algunos para mejor contraste */
+   --bizland-background: #041c2c;
+   --on-background: #fff;
+   --surface: #0a1929;
+   --on-surface: #fff;
+   --button-disabled: #444b53;
+   --button-enabled: var(--secondary);
   }
 }
 
