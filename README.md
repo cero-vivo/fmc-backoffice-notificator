@@ -104,6 +104,6 @@ Si necesitan ayuda con la configuración o tienen preguntas sobre el código, no
 
 *Made with 💙 for the Bizland Mobile Team*
 
-**Luis Espinoza** 🥷 💙
+**Luis Espinoza** 🥷 
 
 
