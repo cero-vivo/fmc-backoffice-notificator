@@ -10,14 +10,14 @@ Con mucho cariño les comparto esta aplicación de notificaciones push que desar
 
 ## ¿Qué es esta aplicación?
 
-Una aplicación web completa para gestionar y enviar notificaciones push a dispositivos móviles usando Firebase Cloud Messaging (FCM). Está diseñada con los colores corporativos de Bizland y lista para usar en ambientes de producción y desarrollo.
+Una aplicación web para enviar notificaciones push a dispositivos móviles usando Firebase Cloud Messaging (FCM).
 
 ## Características Principales
 
 - **Autenticación segura** - Login protegido para acceso controlado
 - **Gestión de tokens FCM** - Añadir, editar y organizar tokens de dispositivos
-- **Envío masivo** - Enviar notificaciones a múltiples dispositivos simultáneamente
-- **Multi-ambiente** - Soporte para desarrollo, staging y producción
+- **Envío masivo** - Enviar notificaciones a múltiples dispositivos
+- **Multi-ambiente** - Soporte para ambientes de desarrollo y producción
 - **Reportes detallados** - Ver estadísticas de envíos exitosos y fallidos
 - **Diseño Bizland** - Colores corporativos y diseño profesional
 - **Tecnología moderna** - Next.js 15, React 19, TypeScript
