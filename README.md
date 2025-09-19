@@ -3,24 +3,13 @@
 
 Aplicación web para enviar notificaciones push a dispositivos móviles Android/iOS usando Firebase Cloud Messaging (FCM). Permite gestionar tokens, seleccionar ambiente (desarrollo/producción), redactar mensajes y enviarlos de forma masiva, con reportes de éxito y error.
 
-## Características Principales
+## Características
 
-- **Autenticación segura** - Login protegido para acceso controlado
+- **Autenticación segura** - Login protegido via creacion local en .env.local a cargo del desarrollador
 - **Gestión de tokens FCM** - Añadir, editar y organizar tokens de dispositivos
 - **Envío masivo** - Enviar notificaciones a múltiples dispositivos
 - **Multi-ambiente** - Soporte para ambientes de desarrollo y producción
-- **Reportes detallados** - Ver estadísticas de envíos exitosos y fallidos
-- **Diseño Bizland** - Colores corporativos y diseño profesional
-- **Tecnología moderna** - Next.js 15, React 19, TypeScript
-
-## Tecnologías Utilizadas
-
-- **Framework**: Next.js 15.5.3 con Turbopack
-- **Frontend**: React 19.1.0 + TypeScript
-- **Backend**: Firebase Admin SDK 13.5.0
-- **Styling**: CSS personalizado con variables Bizland
-- **Icons**: Lucide React
-- **Bundler**: Turbopack para desarrollo ultra-rápido
+- **Reportes resultados** - Ver estadísticas de envíos exitosos y fallidos
 
 ## Configuración
 
@@ -73,7 +62,7 @@ bun dev
 
 ## Cómo Usar
 
-1. **Login**: Accede con las credenciales configuradas
+1. **Login**: Accede con las credenciales configuradas en .env.local
 2. **Configurar ambiente**: Selecciona desarrollo o producción
 3. **Agregar tokens**: Ingresa tokens FCM de dispositivos
 4. **Crear notificación**: Escribe título y mensaje
@@ -81,18 +70,11 @@ bun dev
 
 ## Colaboración
 
-Este proyecto está diseñado para crecer con el equipo.
-
-Espero que les sea muy útil y facilite el trabajo diario.
-
-### Contacto
-
-Si necesitan ayuda con la configuración o tienen preguntas sobre el código, no duden en contactarme. ¡Estoy aquí para apoyar! 
+Espero que les sea útil y facilite el trabajo diario.
+Que siga creciendo si asi nos resulta conveniente.
 
 ---
 
-**¡Que tengan excelentes desarrollos!** 
+*Iniciado por Luis Espinoza*
 
-*Made with 💙 for the Bizland Mobile Team*
 
-Iniciado por Luis Espinoza 🥷
