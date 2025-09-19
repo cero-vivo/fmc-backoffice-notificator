@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Settings, Send, AlertCircle, CheckCircle, XCircle, Info, Wrench, Rocket } from 'lucide-react'
+import { Settings, Send, CheckCircle, XCircle, Info, Wrench, Rocket } from 'lucide-react'
 import TokenInput from '../../components/TokenInput'
 
 export default function Dashboard() {
@@ -9,7 +9,17 @@ export default function Dashboard() {
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [result, setResult] = useState<any>(null)
+  const [result, setResult] = useState<{
+    success: boolean;
+    successCount: number;
+    failCount: number;
+    successTokens: string[];
+    failTokens: Array<{ token: string; code: string; message: string }>;
+    environment: string;
+    totalTokens?: number;
+  } | {
+    error: string;
+  } | null>(null)
   const [environment, setEnvironment] = useState('development')
   const [isChangingEnv, setIsChangingEnv] = useState(false)
   const [showEnvDropdown, setShowEnvDropdown] = useState(false)
@@ -346,8 +356,8 @@ export default function Dashboard() {
             marginTop: '32px',
             padding: '20px',
             borderRadius: '8px',
-            background: result.error ? '#fef2f2' : '#f0fdf4',
-            border: `1px solid ${result.error ? '#fecaca' : '#bbf7d0'}`
+            background: 'error' in result ? '#fef2f2' : '#f0fdf4',
+            border: `1px solid ${'error' in result ? '#fecaca' : '#bbf7d0'}`
           }}>
             <div style={{
               display: 'flex',
@@ -355,22 +365,22 @@ export default function Dashboard() {
               gap: '8px',
               marginBottom: '16px'
             }}>
-              {result.error ? (
+              {'error' in result ? (
                 <XCircle size={20} color="var(--error)" />
               ) : (
                 <CheckCircle size={20} color="var(--success)" />
               )}
               <h3 style={{
-                color: result.error ? '#dc2626' : '#16a34a',
+                color: 'error' in result ? '#dc2626' : '#16a34a',
                 margin: 0,
                 fontSize: '18px',
                 fontWeight: '600'
               }}>
-                {result.error ? 'Error' : 'Resultado'}
+                {'error' in result ? 'Error' : 'Resultado'}
               </h3>
             </div>
 
-            {result.error ? (
+            {'error' in result ? (
               <p style={{ color: '#dc2626', margin: 0, fontSize: '14px' }}>
                 {result.error}
               </p>
@@ -409,7 +419,7 @@ export default function Dashboard() {
                       Ver detalles de errores
                     </summary>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '12px' }}>
-                      {result.failTokens.map((error, idx) => (
+                      {result.failTokens.map((error: { token: string; code: string; message: string }, idx: number) => (
                         <div key={idx} style={{
                           padding: '12px',
                           background: 'white',

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import admin from 'firebase-admin'
+import admin, { ServiceAccount } from 'firebase-admin'
 import { getCurrentConfig } from '../../../config'
 
 // Cache para las instancias de Firebase Admin por ambiente
@@ -53,7 +53,7 @@ function getFirebaseInstance() {
       }
       
       const app = admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount)
+        credential: admin.credential.cert(serviceAccount as ServiceAccount)
       }, environment)
       firebaseInstances.set(environment, app)
       console.log(`✅ Firebase Admin inicializado para ambiente: ${environment}`)
@@ -105,15 +105,15 @@ export async function POST(request: NextRequest) {
         const response = await messaging.send(message)
         console.log(`✅ Notificación enviada al token ${token}:`, response)
         successNotifications.push(token)
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error(`❌ Error al enviar notificación al token ${token}:`, error)
         
         // Crear objeto de error detallado
         const errorDetails = {
           token: token,
-          code: error.code || 'UNKNOWN_ERROR',
-          message: error.message || 'Error desconocido',
-          details: error.details || null
+          code: (error as { code?: string }).code || 'UNKNOWN_ERROR',
+          message: (error as { message?: string }).message || 'Error desconocido',
+          details: (error as { details?: unknown }).details || null
         }
         
         failNotifications.push(errorDetails)
@@ -133,12 +133,12 @@ export async function POST(request: NextRequest) {
       environment: config.environment
     })
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ Error en API de notificaciones:', error)
     return NextResponse.json(
       { 
         error: 'Error interno del servidor',
-        details: error.message || 'Error desconocido'
+        details: (error as { message?: string }).message || 'Error desconocido'
       },
       { status: 500 }
     )

@@ -1,222 +1,140 @@
-# 📱 Push Notifications Dashboard
+# 🎁 Push Notifications App - Regalo para el Equipo Móvil de Bizland
 
-Dashboard web para enviar notificaciones push a través de Firebase Cloud Messaging (FCM) con autenticación BasicAuth y **cambio de ambiente en tiempo de ejecución**.
+¡Hola equipo! 👋 
 
-## 🚀 Características
+Con mucho cariño les comparto esta aplicación de notificaciones push desarrollada especialmente para el equipo móvil de Bizland. Espero que sea de gran utilidad para sus proyectos.
 
-- ✅ Interfaz web moderna y responsive
-- ✅ Autenticación BasicAuth
-- ✅ **Cambio de ambiente en tiempo de ejecución** con select simple
-- ✅ Envío masivo de notificaciones push
-- ✅ Manejo de errores y reportes detallados
-- ✅ Integración con Firebase Admin SDK
-- ✅ Soporte para múltiples tokens
-- ✅ Configuración centralizada por ambiente
+**Por Luis Espinoza** ❤️
 
-## 📋 Requisitos Previos
+---
 
-1. **Node.js** (versión 18 o superior)
-2. **Cuenta de Firebase** con proyecto configurado
-3. **Claves de servicio de Firebase** (archivos JSON para desarrollo y producción)
+## ✨ ¿Qué es esta aplicación?
 
-## 🛠️ Instalación
+Una aplicación web completa para gestionar y enviar notificaciones push a dispositivos móviles usando Firebase Cloud Messaging (FCM). Está diseñada con los colores corporativos de Bizland y lista para usar en múltiples ambientes.
 
-1. **Clonar el repositorio:**
-   ```bash
-   git clone <tu-repositorio>
-   cd push-notifications-app
-   ```
+## 🎨 Características Principales
 
-2. **Instalar dependencias:**
-   ```bash
-   npm install
-   ```
+- **🔐 Autenticación segura** - Login protegido para acceso controlado
+- **📱 Gestión de tokens FCM** - Añadir, editar y organizar tokens de dispositivos
+- **🚀 Envío masivo** - Enviar notificaciones a múltiples dispositivos simultáneamente
+- **🌍 Multi-ambiente** - Soporte para desarrollo, staging y producción
+- **📊 Reportes detallados** - Ver estadísticas de envíos exitosos y fallidos
+- **🎨 Diseño Bizland** - Colores corporativos y diseño profesional
+- **⚡ Tecnología moderna** - Next.js 15, React 19, TypeScript
 
-3. **Configurar Firebase:**
-   - Ve a la consola de Firebase
-   - Selecciona tu proyecto de desarrollo
-   - Ve a "Configuración del proyecto" > "Cuentas de servicio"
-   - Genera una nueva clave privada
-   - Descarga el archivo JSON y renómbralo a `service-account-key-dev.json`
-   
-   - Repite el proceso para tu proyecto de producción
-   - Renombra el archivo a `service-account-key-prod.json`
+## �️ Tecnologías Utilizadas
 
-4. **Configurar variables de entorno:**
-   ```bash
-   cp .env.example .env.local
-   ```
-   
-   Edita `.env.local` con tus credenciales:
-   ```
-   NODE_ENV=development
-   BASIC_AUTH_USERNAME=tu_usuario
-   BASIC_AUTH_PASSWORD=tu_contraseña_segura
-   ```
+- **Framework**: Next.js 15.5.3 con Turbopack
+- **Frontend**: React 19.1.0 + TypeScript
+- **Backend**: Firebase Admin SDK 13.5.0
+- **Styling**: CSS personalizado con variables Bizland
+- **Icons**: Lucide React
+- **Bundler**: Turbopack para desarrollo ultra-rápido
 
-## 🚀 Uso
+## 🎯 Configuración Rápida
 
-### Inicio Rápido
-
-1. **Iniciar el servidor de desarrollo:**
-   ```bash
-   npm run dev
-   ```
-
-2. **Acceder al dashboard:**
-   - Abre tu navegador en `http://localhost:3000`
-   - Serás redirigido automáticamente al login
-   - Usa las credenciales configuradas
-
-### 🔄 Cambio de Ambiente
-
-**¡Súper simple!** Solo usa el select en la esquina superior derecha del dashboard:
-
-1. **Selecciona el ambiente:**
-   - 🔧 Desarrollo
-   - 🚀 Producción
-
-2. **El cambio se aplica inmediatamente** sin reiniciar el servidor
-
-### 📱 Enviar Notificaciones
-
-1. **Completar el formulario:**
-   - **Título:** Título de la notificación
-   - **Mensaje:** Contenido del mensaje
-   - **Tokens:** Lista de tokens Firebase (uno por línea)
-
-2. **Hacer clic en "Enviar Notificaciones"**
-
-3. **Revisar el reporte de resultados**
-
-## 🔧 Configuración por Ambiente
-
-### Desarrollo
-- **Delay entre notificaciones:** 100ms (más rápido)
-- **Título:** "Dashboard de Notificaciones Push - DEV"
-- **Firebase:** `service-account-key-dev.json`
-
-### Producción
-- **Delay entre notificaciones:** 500ms (más conservador)
-- **Título:** "Dashboard de Notificaciones Push"
-- **Firebase:** `service-account-key-prod.json`
-
-## 📱 Obtener Tokens Firebase
-
-Para obtener tokens de dispositivos, necesitas implementar el SDK de Firebase en tu aplicación móvil:
-
-### Android (Kotlin/Java)
-```kotlin
-FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-    if (!task.isSuccessful) {
-        Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-        return@addOnCompleteListener
-    }
-    
-    // Get new FCM registration token
-    val token = task.result
-    Log.d(TAG, "FCM Registration Token: $token")
-    
-    // Enviar token a tu servidor
-    sendTokenToServer(token)
-}
+### 1. Instalar dependencias
+```bash
+npm install
 ```
 
-### iOS (Swift)
-```swift
-Messaging.messaging().token { token, error in
-    if let error = error {
-        print("Error fetching FCM registration token: \(error)")
-    } else if let token = token {
-        print("FCM registration token: \(token)")
-        // Enviar token a tu servidor
-        sendTokenToServer(token)
-    }
-}
+### 2. Configurar Firebase
+Coloca tus archivos de service account en la raíz:
+- `service-account-key-dev.json` (desarrollo)
+- `service-account-key-prod.json` (producción)
+
+### 3. Variables de entorno
+Crea `.env.local`:
+```env
+NEXT_PUBLIC_APP_ENV=development
+LOGIN_USERNAME=admin
+LOGIN_PASSWORD=tu-password-seguro
 ```
 
-## 🔧 Estructura del Proyecto
-
-```
-push-notifications-app/
-├── src/
-│   ├── config/
-│   │   └── index.ts              # Configuración centralizada
-│   ├── app/
-│   │   ├── api/
-│   │   │   ├── auth/             # API de autenticación
-│   │   │   ├── config/           # API de configuración
-│   │   │   └── notifications/    # API de notificaciones
-│   │   ├── dashboard/
-│   │   │   └── page.tsx          # Dashboard principal con select
-│   │   ├── login/                # Página de login
-│   │   └── page.tsx              # Página de inicio
-│   └── middleware.ts              # Middleware de autenticación
-├── service-account-key-dev.json   # Clave de servicio desarrollo
-├── service-account-key-prod.json # Clave de servicio producción
-├── .env.example                  # Variables de entorno de ejemplo
-└── README.md
+### 4. Ejecutar en desarrollo
+```bash
+npm run dev
 ```
 
-## 🔒 Seguridad
+¡Y listo! La app estará disponible en `http://localhost:3000` 🎉
 
-- **Autenticación BasicAuth:** Protege el acceso al dashboard
-- **Validación de entrada:** Todos los campos son validados
-- **Manejo de errores:** Errores manejados de forma segura
-- **Rate limiting:** Pausa entre envíos para evitar throttling
-- **Configuración separada:** Ambientes completamente aislados
-
-## 🚨 Consideraciones Importantes
-
-1. **Archivos de clave de servicio:** Nunca subas los archivos `service-account-key-*.json` al repositorio
-2. **Credenciales:** Cambia las credenciales por defecto en producción
-3. **Rate limiting:** Firebase tiene límites de envío, considera implementar colas
-4. **Tokens inválidos:** Los tokens pueden expirar, implementa renovación automática
-5. **Cambio de ambiente:** Los cambios se aplican inmediatamente sin reiniciar el servidor
-
-## 📊 Monitoreo
-
-El dashboard muestra:
-- Total de tokens procesados
-- Número de notificaciones enviadas exitosamente
-- Número de fallos
-- Lista detallada de tokens fallidos
-- **Ambiente actual** en tiempo real
-
-## 🛠️ Desarrollo
+## 🚀 Scripts Disponibles
 
 ```bash
-# Modo desarrollo
-npm run dev
-
-# Construir para producción
-npm run build
-
-# Iniciar en producción
-npm run start
-
-# Linting
-npm run lint
+npm run dev      # Modo desarrollo con Turbopack
+npm run build    # Compilar para producción  
+npm run start    # Ejecutar versión de producción
+npm run lint     # Verificar código
 ```
 
-## 📝 Licencia
+## 🎨 Colores de Bizland Incluidos
 
-Este proyecto está bajo la Licencia MIT.
+El diseño utiliza la paleta oficial de Bizland:
 
-## 🤝 Contribuciones
+- **Primary Blue**: `hsl(217, 100%, 36.7%)` - El azul característico de Bizland
+- **Secondary Teal**: `#3CDBC0` - Verde azulado para acentos
+- **Surface**: `#F5F9FF` - Fondo suave y profesional
+- **Success**: `#10B981` - Verde para confirmaciones
+- **Error**: `#EF4444` - Rojo para errores
+- **Warning**: `#F59E0B` - Naranja para advertencias
 
-Las contribuciones son bienvenidas. Por favor:
-1. Fork el proyecto
-2. Crea una rama para tu feature
-3. Commit tus cambios
-4. Push a la rama
-5. Abre un Pull Request
+## 📱 Cómo Usar
 
-## 📞 Soporte
+1. **Login**: Accede con las credenciales configuradas
+2. **Configurar ambiente**: Selecciona desarrollo o producción
+3. **Agregar tokens**: Ingresa tokens FCM de dispositivos
+4. **Crear notificación**: Escribe título y mensaje
+5. **Enviar**: ¡Presiona enviar y ve los resultados!
 
-Si tienes problemas o preguntas:
-1. Revisa la documentación de Firebase
-2. Verifica la configuración de tu proyecto
-3. Revisa los logs del servidor
-4. Usa el select de ambiente para verificar el ambiente actual
-5. Abre un issue en el repositorio
+## 🏗️ Estructura del Proyecto
+
+```
+src/
+├── app/
+│   ├── api/           # Endpoints del backend
+│   ├── dashboard/     # Panel principal
+│   ├── login/         # Página de autenticación
+│   └── layout.tsx     # Layout principal
+├── components/
+│   └── TokenInput.tsx # Componente para gestionar tokens
+└── config/
+    └── index.ts       # Configuración y colores
+```
+
+## � Consejos para el Equipo
+
+- **Testing**: Usa el ambiente de desarrollo para pruebas
+- **Tokens**: Los tokens FCM se pueden obtener desde las apps móviles
+- **Múltiples envíos**: La app maneja lotes grandes automáticamente
+- **Errores**: Los detalles de errores se muestran para debugging
+- **Seguridad**: Cambia las credenciales de login en producción
+
+## 🤝 Colaboración
+
+Este proyecto está diseñado para crecer con el equipo. Si necesitan nuevas características o tienen ideas de mejora, ¡estoy disponible para colaborar!
+
+**Funcionalidades futuras que podríamos agregar**:
+- 📊 Dashboard con métricas avanzadas
+- 📅 Programación de notificaciones
+- 👥 Gestión de usuarios múltiples
+- 🔔 Templates de notificaciones
+- 📈 Analytics de engagement
+
+## 🙏 Agradecimientos
+
+Gracias al equipo móvil de Bizland por la oportunidad de contribuir con esta herramienta. Espero que les sea muy útil y facilite su trabajo diario.
+
+---
+
+**¡Que tengan excelentes desarrollos!** 🚀
+
+*Con cariño,*  
+**Luis Espinoza** 💙
+
+---
+
+### 📞 Contacto
+
+Si necesitan ayuda con la configuración o tienen preguntas sobre el código, no duden en contactarme. ¡Estoy aquí para apoyar! 
+
+*Made with ❤️ for the Bizland Mobile Team*

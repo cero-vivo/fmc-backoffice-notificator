@@ -1,9 +1,0 @@
-regex:-----BEGIN PRIVATE KEY-----[^-]*-----END PRIVATE KEY-----==>"{{PRIVATE_KEY}}"
-pago-facil-42bbe==>{{DEVELOPMENT_PROJECT_ID}}
-callao-nodos==>{{PRODUCTION_PROJECT_ID}}
-cfd921e2fcd055da04a77187d12c29c9405383b9==>{{DEV_PRIVATE_KEY_ID}}
-4377698b5f0eb85af3bee709c3e5e711e27655c2==>{{PROD_PRIVATE_KEY_ID}}
-firebase-adminsdk-ab8un@pago-facil-42bbe.iam.gserviceaccount.com==>{{DEV_CLIENT_EMAIL}}
-firebase-adminsdk-gzust@callao-nodos.iam.gserviceaccount.com==>{{PROD_CLIENT_EMAIL}}
-117635954510124539737==>{{DEV_CLIENT_ID}}
-100807866955996078951==>{{PROD_CLIENT_ID}}

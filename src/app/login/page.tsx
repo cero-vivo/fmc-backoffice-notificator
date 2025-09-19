@@ -5,8 +5,6 @@ import { useRouter } from 'next/navigation'
 import { LogIn, User, Lock, AlertCircle } from 'lucide-react'
 
 export default function Login() {
-  // Detectar dark mode
-  const isDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -36,7 +34,7 @@ export default function Login() {
         const data = await response.json()
         setError(data.error || 'Error de autenticación')
       }
-    } catch (error) {
+    } catch {
       setError('Error de conexión')
     } finally {
       setIsLoading(false)

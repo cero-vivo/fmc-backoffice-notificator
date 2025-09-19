@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { X, Plus } from 'lucide-react'
 
 interface TokenInputProps {
@@ -43,8 +43,6 @@ export default function TokenInput({ tokens, onTokensChange }: TokenInputProps) 
     onTokensChange(uniqueTokens)
   }
 
-  // Detectar dark mode
-  const isDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
   return (
     <div>
       <label style={{ 
