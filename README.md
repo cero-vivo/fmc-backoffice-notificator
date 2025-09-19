@@ -1,4 +1,4 @@
-# 🎁 Push Notifications App - Regalo para el Equipo Móvil de Bizland
+# 🎁 Push Notifications App -  Para el Equipo Móvil de Bizland
 
 ¡Hola equipo! 👋 
 
