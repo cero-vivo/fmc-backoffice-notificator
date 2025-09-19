@@ -98,32 +98,21 @@ export default function Dashboard() {
     }
   }
 
-  // Detectar si el usuario está en modo dark
-  const isDark = typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
-  const bgMain = isDark ? '#18181b' : '#f9fafb'
-  const bgCard = isDark ? '#23232a' : 'white'
-  const textMain = isDark ? '#f3f4f6' : '#1f2937'
-  const textSecondary = isDark ? '#a1a1aa' : '#6b7280'
-  const borderColor = isDark ? '#3f3f46' : '#e5e7eb'
-  const inputBg = isDark ? '#18181b' : 'white'
-  const inputBorder = isDark ? '#52525b' : '#e5e7eb'
-  const dropdownBg = isDark ? '#23232a' : 'white'
-  const dropdownBorder = isDark ? '#3f3f46' : '#e5e7eb'
-  const dropdownActive = isDark ? '#27272a' : '#f3f4f6'
   return (
     <div style={{
       minHeight: '100vh',
-      background: bgMain,
+      background: 'var(--surface)',
       padding: '20px',
       fontFamily: 'system-ui, -apple-system, sans-serif'
     }}>
       <div style={{
         maxWidth: '900px',
         margin: '0 auto',
-        background: bgCard,
+        background: 'var(--bizland-background)',
         borderRadius: '12px',
         padding: '40px',
-        boxShadow: isDark ? '0 4px 16px -2px rgba(0,0,0,0.7)' : '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+        boxShadow: '0 8px 32px rgba(4, 28, 44, 0.12)',
+        border: '1px solid var(--neutral)'
       }}>
         {/* Header */}
         <div style={{
@@ -133,7 +122,7 @@ export default function Dashboard() {
           marginBottom: '32px',
           paddingBottom: '20px',
           gap: "5%",
-          borderBottom: `1px solid ${borderColor}`
+          borderBottom: '1px solid var(--neutral)'
         }}>
           <img src="/Bizland.png" alt="BIZLAND Logo" style={{ width: '120px', height: 'auto', objectFit: 'contain', marginBottom: '12px' }} />
 
@@ -141,7 +130,7 @@ export default function Dashboard() {
             <label style={{
               fontSize: '14px',
               fontWeight: '600',
-              color: textMain
+              color: 'var(--on-surface)'
             }}>
               Ambiente:
             </label>
@@ -155,13 +144,12 @@ export default function Dashboard() {
                   gap: '8px',
                   padding: '8px 12px',
                   borderRadius: '6px',
-                  border: `2px solid ${borderColor}`,
+                  border: '2px solid var(--neutral)',
                   fontSize: '14px',
                   fontWeight: '500',
-                  color: textMain,
+                  color: 'var(--on-surface)',
                   opacity: isChangingEnv ? 0.7 : 1,
-                  background: dropdownBg,
-                  color: textMain,
+                  background: 'var(--bizland-background)',
                   minWidth: '140px'
                 }}
                 onClick={() => setShowEnvDropdown((prev) => !prev)}
@@ -175,10 +163,10 @@ export default function Dashboard() {
                   position: 'absolute',
                   top: '110%',
                   left: 0,
-                  background: dropdownBg,
-                  border: `2px solid ${dropdownBorder}`,
+                  background: 'var(--bizland-background)',
+                  border: '2px solid var(--neutral)',
                   borderRadius: '8px',
-                  boxShadow: isDark ? '0 2px 16px rgba(0,0,0,0.7)' : '0 2px 8px rgba(0,0,0,0.08)',
+                  boxShadow: '0 8px 32px rgba(4, 28, 44, 0.12)',
                   zIndex: 10,
                   minWidth: '140px',
                   overflow: 'hidden'
@@ -190,10 +178,10 @@ export default function Dashboard() {
                       gap: '8px',
                       padding: '10px 16px',
                       cursor: 'pointer',
-                      background: environment === 'development' ? dropdownActive : dropdownBg,
-                      color: textMain,
+                      background: environment === 'development' ? 'var(--surface)' : 'var(--bizland-background)',
+                      color: 'var(--on-surface)',
                       fontWeight: environment === 'development' ? '600' : '500',
-                      borderBottom: `1px solid ${dropdownBorder}`
+                      borderBottom: '1px solid var(--neutral)'
                     }}
                     onClick={() => { handleEnvironmentChange('development'); setShowEnvDropdown(false); }}
                   >
@@ -206,8 +194,8 @@ export default function Dashboard() {
                       gap: '8px',
                       padding: '10px 16px',
                       cursor: 'pointer',
-                      background: environment === 'production' ? dropdownActive : dropdownBg,
-                      color: textMain,
+                      background: environment === 'production' ? 'var(--surface)' : 'var(--bizland-background)',
+                      color: 'var(--on-surface)',
                       fontWeight: environment === 'production' ? '600' : '500'
                     }}
                     onClick={() => { handleEnvironmentChange('production'); setShowEnvDropdown(false); }}
@@ -227,7 +215,7 @@ export default function Dashboard() {
               display: 'block',
               marginBottom: '8px',
               fontWeight: '600',
-              color: textMain,
+              color: 'var(--on-surface)',
               fontSize: '14px'
             }}>
               Título de la notificación:
@@ -241,14 +229,16 @@ export default function Dashboard() {
               style={{
                 width: '100%',
                 padding: '12px',
-                border: `2px solid ${inputBorder}`,
+                border: '2px solid var(--neutral)',
                 borderRadius: '8px',
                 fontSize: '16px',
                 outline: 'none',
                 transition: 'border-color 0.2s',
-                background: inputBg,
-                color: textMain
+                background: 'var(--bizland-background)',
+                color: 'var(--on-background)'
               }}
+              onFocus={(e) => e.target.style.borderColor = 'var(--primary)'}
+              onBlur={(e) => e.target.style.borderColor = 'var(--neutral)'}
             />
           </div>
 
@@ -258,7 +248,7 @@ export default function Dashboard() {
               display: 'block',
               marginBottom: '8px',
               fontWeight: '600',
-              color: isDark ? '#e5e7eb' : '#374151',
+              color: 'var(--on-surface)',
               fontSize: '14px'
             }}>
               Mensaje de la notificación:
@@ -272,16 +262,18 @@ export default function Dashboard() {
               style={{
                 width: '100%',
                 padding: '12px',
-                border: `2px solid ${inputBorder}`,
+                border: '2px solid var(--neutral)',
                 borderRadius: '8px',
                 fontSize: '16px',
                 outline: 'none',
                 resize: 'vertical',
                 transition: 'border-color 0.2s',
-                background: inputBg,
-                color: textMain,
+                background: 'var(--bizland-background)',
+                color: 'var(--on-background)',
                 fontFamily: 'inherit'
               }}
+              onFocus={(e) => e.target.style.borderColor = 'var(--primary)'}
+              onBlur={(e) => e.target.style.borderColor = 'var(--neutral)'}
             />
           </div>
 
@@ -300,7 +292,7 @@ export default function Dashboard() {
                 ? (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
                   ? '#23272f'
                   : '#d1d5db')
-                : '#8b5cf6',
+                : 'hsl(217, 100.0%, 36.7%)',
               color: 'white',
               border: 'none',
               padding: '16px 32px',
@@ -353,9 +345,9 @@ export default function Dashboard() {
               marginBottom: '16px'
             }}>
               {result.error ? (
-                <XCircle size={20} color="#dc2626" />
+                <XCircle size={20} color="var(--error)" />
               ) : (
-                <CheckCircle size={20} color="#16a34a" />
+                <CheckCircle size={20} color="var(--success)" />
               )}
               <h3 style={{
                 color: result.error ? '#dc2626' : '#16a34a',
@@ -381,13 +373,13 @@ export default function Dashboard() {
                     </span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <CheckCircle size={16} color="#16a34a" />
+                    <CheckCircle size={16} color="var(--success)" />
                     <span style={{ fontSize: '14px', color: '#374151' }}>
                       <strong>Exitosos:</strong> {result.successCount}
                     </span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <XCircle size={16} color="#dc2626" />
+                    <XCircle size={16} color="var(--error)" />
                     <span style={{ fontSize: '14px', color: '#374151' }}>
                       <strong>Fallidos:</strong> {result.failCount}
                     </span>

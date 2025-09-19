@@ -1,12 +1,44 @@
+@import '../styles/bizland-colors.css';
+
 :root {
+  /* Colores originales de Next.js */
   --background: #ffffff;
   --foreground: #171717;
+  
+  /* Paleta de colores de Bizland */
+  --primary: hsl(217, 100.0%, 36.7%);
+  --on-primary: #fff;
+  --secondary: #3CDBC0;
+  --on-secondary: #041c2c;
+  --tertiary: hsl(204, 83.33%, 9.41%);
+  --on-tertiary: #fff;
+  --bizland-background: #fff;
+  --on-background: #041c2c;
+  --surface: #F5F9FF;
+  --on-surface: #041c2c;
+  --error: #E73D3D;
+  --on-error: #fff;
+  --success: #39B54A;
+  --on-success: #fff;
+  --warning: #FFC107;
+  --on-warning: #041c2c;
+  --info: #2196F3;
+  --on-info: #fff;
+  --neutral: #9E9E9E;
+  --on-neutral: #041c2c;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    
+    /* En modo oscuro, mantenemos los colores principales de Bizland
+       pero ajustamos algunos para mejor contraste */
+    --bizland-background: #041c2c;
+    --on-background: #fff;
+    --surface: #0a1929;
+    --on-surface: #fff;
   }
 }
 

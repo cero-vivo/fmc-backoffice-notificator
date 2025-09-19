@@ -46,7 +46,7 @@ export default function Login() {
   return (
     <div style={{ 
       minHeight: '100vh', 
-      background: isDark ? '#181a20' : '#f9fafb',
+      background: 'var(--surface)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -54,20 +54,19 @@ export default function Login() {
       fontFamily: 'system-ui, -apple-system, sans-serif'
     }}>
       <div style={{
-        background: isDark ? '#23272f' : 'white',
+        background: 'var(--bizland-background)',
         borderRadius: '12px',
         padding: '40px',
-        boxShadow: isDark
-          ? '0 4px 12px rgba(0,0,0,0.5)'
-          : '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+        boxShadow: '0 8px 32px rgba(4, 28, 44, 0.12)',
         width: '100%',
-        maxWidth: '400px'
+        maxWidth: '400px',
+        border: '1px solid var(--neutral)'
       }}>
         {/* Logo y título */}
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <img src="/Bizland.png" alt="BIZLAND Logo" style={{ width: '120px', height: 'auto', objectFit: 'contain', marginBottom: '12px' }} />
           <h1 style={{
-            color: isDark ? '#e5e7eb' : '#1f2937',
+            color: 'var(--primary)',
             marginBottom: '8px',
             fontSize: '1.5rem',
             fontWeight: '700'
@@ -75,9 +74,10 @@ export default function Login() {
             Push Notificator
           </h1>
           <p style={{
-            color: isDark ? '#cbd5e1' : '#6b7280',
+            color: 'var(--on-surface)',
             fontSize: '14px',
-            margin: 0
+            margin: 0,
+            opacity: 0.8
           }}>
             Inicia sesión para acceder al dashboard
           </p>
@@ -89,7 +89,7 @@ export default function Login() {
               display: 'block', 
               marginBottom: '8px', 
               fontWeight: '600',
-              color: isDark ? '#e5e7eb' : '#374151',
+              color: 'var(--on-surface)',
               fontSize: '14px'
             }}>
               Usuario:
@@ -102,7 +102,7 @@ export default function Login() {
                   left: '12px',
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  color: '#9ca3af'
+                  color: 'var(--neutral)'
                 }}
               />
               <input
@@ -114,14 +114,16 @@ export default function Login() {
                 style={{
                   width: '100%',
                   padding: '12px 12px 12px 40px',
-                  border: '2px solid #e5e7eb',
+                  border: '2px solid var(--neutral)',
                   borderRadius: '8px',
                   fontSize: '16px',
                   outline: 'none',
                   transition: 'border-color 0.2s',
-                  background: isDark ? '#23272f' : 'white',
-                  color: isDark ? '#e5e7eb' : undefined
+                  background: 'var(--bizland-background)',
+                  color: 'var(--on-background)'
                 }}
+                onFocus={(e) => e.target.style.borderColor = 'var(--primary)'}
+                onBlur={(e) => e.target.style.borderColor = 'var(--neutral)'}
               />
             </div>
           </div>
@@ -131,7 +133,7 @@ export default function Login() {
               display: 'block', 
               marginBottom: '8px', 
               fontWeight: '600',
-              color: isDark ? '#e5e7eb' : '#374151',
+              color: 'var(--on-surface)',
               fontSize: '14px'
             }}>
               Contraseña:
@@ -144,7 +146,7 @@ export default function Login() {
                   left: '12px',
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  color: '#9ca3af'
+                  color: 'var(--neutral)'
                 }}
               />
               <input
@@ -156,14 +158,16 @@ export default function Login() {
                 style={{
                   width: '100%',
                   padding: '12px 12px 12px 40px',
-                  border: '2px solid #e5e7eb',
+                  border: '2px solid var(--neutral)',
                   borderRadius: '8px',
                   fontSize: '16px',
                   outline: 'none',
                   transition: 'border-color 0.2s',
-                  background: isDark ? '#23272f' : 'white',
-                  color: isDark ? '#e5e7eb' : undefined
+                  background: 'var(--bizland-background)',
+                  color: 'var(--on-background)'
                 }}
+                onFocus={(e) => e.target.style.borderColor = 'var(--primary)'}
+                onBlur={(e) => e.target.style.borderColor = 'var(--neutral)'}
               />
             </div>
           </div>
@@ -171,10 +175,9 @@ export default function Login() {
           {error && (
             <div style={{
               padding: '12px',
-              background: '#fef2f2',
-              border: '1px solid #fecaca',
+              background: 'var(--error)',
               borderRadius: '8px',
-              color: '#dc2626',
+              color: 'var(--on-error)',
               fontSize: '14px',
               display: 'flex',
               alignItems: 'center',
@@ -188,11 +191,12 @@ export default function Login() {
           <button
             type="submit"
             disabled={isLoading}
+            className="btn-primary"
             style={{
               background: isLoading
-                ? (isDark ? '#23272f' : '#d1d5db')
-                : '#8b5cf6',
-              color: 'white',
+                ? 'var(--neutral)'
+                : 'var(--primary)',
+              color: 'var(--on-primary)',
               border: 'none',
               padding: '14px',
               borderRadius: '8px',
@@ -203,7 +207,8 @@ export default function Login() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '8px'
+              gap: '8px',
+              width: '100%'
             }}
           >
             {isLoading ? (

@@ -23,40 +23,42 @@ export default function Home() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      background: '#f9fafb',
+      background: 'var(--surface)',
       fontFamily: 'system-ui, -apple-system, sans-serif'
     }}>
       <div style={{
         textAlign: 'center',
-        color: '#1f2937'
+        color: 'var(--on-surface)'
       }}>
         <div style={{
           width: '80px',
           height: '80px',
-          background: '#8b5cf6',
+          background: 'var(--primary)',
           borderRadius: '16px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: 'white',
+          color: 'var(--on-primary)',
           fontSize: '32px',
           fontWeight: 'bold',
-          margin: '0 auto 24px auto'
+          margin: '0 auto 24px auto',
+          boxShadow: '0 8px 32px rgba(36, 107, 253, 0.3)'
         }}>
-          N
+          B
         </div>
         <h1 style={{ 
           fontSize: '2rem', 
           marginBottom: '16px',
           fontWeight: '700',
-          color: '#1f2937'
+          color: 'var(--primary)'
         }}>
-          NOUS Push Notifications
+          Bizland Notificator
         </h1>
         <p style={{ 
           fontSize: '1rem', 
-          color: '#6b7280',
-          marginBottom: '24px'
+          color: 'var(--on-surface)',
+          marginBottom: '24px',
+          opacity: 0.8
         }}>
           Redirigiendo...
         </p>
@@ -65,7 +67,7 @@ export default function Home() {
           alignItems: 'center',
           justifyContent: 'center',
           gap: '8px',
-          color: '#8b5cf6'
+          color: 'var(--secondary)'
         }}>
           <Loader2 size={20} style={{ animation: 'spin 1s linear infinite' }} />
           <span style={{ fontSize: '14px' }}>Cargando</span>

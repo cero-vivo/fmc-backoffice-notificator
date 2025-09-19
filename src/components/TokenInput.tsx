@@ -51,7 +51,7 @@ export default function TokenInput({ tokens, onTokensChange }: TokenInputProps) 
         display: 'block', 
         marginBottom: '8px', 
         fontWeight: '600',
-        color: isDark ? '#e5e7eb' : '#374151',
+        color: 'var(--on-surface)',
         fontSize: '14px'
       }}>
         Tokens Firebase:
@@ -69,26 +69,31 @@ export default function TokenInput({ tokens, onTokensChange }: TokenInputProps) 
           style={{
             flex: 1,
             padding: '12px',
-            border: '2px solid #e5e7eb',
+            border: '2px solid var(--neutral)',
             borderRadius: '8px',
             fontSize: '14px',
             outline: 'none',
             transition: 'border-color 0.2s',
-            fontFamily: 'monospace'
+            fontFamily: 'monospace',
+            background: 'var(--bizland-background)',
+            color: 'var(--on-background)'
           }}
+          onFocus={(e) => e.target.style.borderColor = 'var(--primary)'}
+          onBlur={(e) => e.target.style.borderColor = 'var(--neutral)'}
         />
         <button
           type="button"
           onClick={addToken}
           disabled={!inputValue.trim()}
+          className="btn-primary"
           style={{
             padding: '12px',
             background: inputValue.trim()
-              ? '#8b5cf6'
-              : isDark
-                ? '#23272f' // más oscuro para dark
-                : '#d1d5db',
-            color: 'white',
+              ? 'var(--primary)'
+              : 'var(--neutral)',
+            color: inputValue.trim()
+              ? 'var(--on-primary)'
+              : 'var(--on-neutral)',
             border: 'none',
             borderRadius: '8px',
             cursor: inputValue.trim() ? 'pointer' : 'not-allowed',
@@ -97,7 +102,7 @@ export default function TokenInput({ tokens, onTokensChange }: TokenInputProps) 
             gap: '4px',
             fontSize: '14px',
             fontWeight: '500',
-            transition: 'background-color 0.2s'
+            transition: 'all 0.2s'
           }}
         >
           <Plus size={16} />
@@ -110,15 +115,15 @@ export default function TokenInput({ tokens, onTokensChange }: TokenInputProps) 
         minHeight: '120px',
         maxHeight: '300px',
         overflowY: 'auto',
-        border: '2px solid #e5e7eb',
+        border: '2px solid var(--neutral)',
         borderRadius: '8px',
         padding: '12px',
-        background: isDark ? '#181a20' : '#f9fafb'
+        background: 'var(--surface)'
       }}>
         {tokens.length === 0 ? (
           <div style={{
             textAlign: 'center',
-            color: '#6b7280',
+            color: 'var(--neutral)',
             fontSize: '14px',
             padding: '20px'
           }}>
@@ -137,21 +142,21 @@ export default function TokenInput({ tokens, onTokensChange }: TokenInputProps) 
                   display: 'flex',
                   alignItems: 'center',
                   gap: '6px',
-                  background: 'white',
-                  border: '1px solid #d1d5db',
+                  background: 'var(--bizland-background)',
+                  border: '1px solid var(--secondary)',
                   borderRadius: '20px',
                   padding: '6px 12px',
                   fontSize: '12px',
                   fontFamily: 'monospace',
                   maxWidth: '300px',
-                  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'
+                  boxShadow: '0 1px 2px rgba(60, 219, 192, 0.1)'
                 }}
               >
                 <span style={{
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
-                  color: '#374151'
+                  color: 'var(--on-background)'
                 }}>
                   {token.length > 30 ? `${token.substring(0, 30)}...` : token}
                 </span>
@@ -167,15 +172,15 @@ export default function TokenInput({ tokens, onTokensChange }: TokenInputProps) 
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: '#6b7280',
+                    color: 'var(--neutral)',
                     transition: 'color 0.2s'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.color = '#ef4444'
-                    e.currentTarget.style.background = '#fef2f2'
+                    e.currentTarget.style.color = 'var(--error)'
+                    e.currentTarget.style.background = 'rgba(231, 61, 61, 0.1)'
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.color = '#6b7280'
+                    e.currentTarget.style.color = 'var(--neutral)'
                     e.currentTarget.style.background = 'none'
                   }}
                 >
@@ -187,7 +192,7 @@ export default function TokenInput({ tokens, onTokensChange }: TokenInputProps) 
         )}
       </div>
       
-      <small style={{ color: '#6b7280', fontSize: '12px', marginTop: '4px', display: 'block' }}>
+      <small style={{ color: 'var(--neutral)', fontSize: '12px', marginTop: '4px', display: 'block' }}>
         {tokens.length} token{tokens.length !== 1 ? 's' : ''} agregado{tokens.length !== 1 ? 's' : ''}
       </small>
     </div>
