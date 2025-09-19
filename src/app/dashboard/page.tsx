@@ -23,6 +23,22 @@ export default function Dashboard() {
   const [environment, setEnvironment] = useState('development')
   const [isChangingEnv, setIsChangingEnv] = useState(false)
   const [showEnvDropdown, setShowEnvDropdown] = useState(false)
+  
+  // Estados para la barra de progreso
+  const [progress, setProgress] = useState({
+    total: 0,
+    processed: 0,
+    success: 0,
+    failed: 0,
+    isActive: false
+  })
+  const [liveResults, setLiveResults] = useState<{
+    successTokens: string[];
+    failTokens: Array<{ token: string; code: string; message: string }>;
+  }>({
+    successTokens: [],
+    failTokens: []
+  })
   // Cerrar dropdown al hacer click fuera
   useEffect(() => {
     if (!showEnvDropdown) return
@@ -79,6 +95,19 @@ export default function Dashboard() {
     e.preventDefault()
     setIsLoading(true)
     setResult(null)
+    
+    // Reiniciar estados de progreso
+    setProgress({
+      total: 0,
+      processed: 0,
+      success: 0,
+      failed: 0,
+      isActive: true
+    })
+    setLiveResults({
+      successTokens: [],
+      failTokens: []
+    })
 
     try {
       if (tokens.length === 0) {
@@ -86,7 +115,7 @@ export default function Dashboard() {
         return
       }
 
-      const response = await fetch('/api/notifications', {
+      const response = await fetch('/api/notifications/stream', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -98,11 +127,74 @@ export default function Dashboard() {
         })
       })
 
-      const data = await response.json()
-      setResult(data)
+      if (!response.ok) {
+        throw new Error('Error en la respuesta del servidor')
+      }
+
+      const reader = response.body?.getReader()
+      const decoder = new TextDecoder()
+
+      if (!reader) {
+        throw new Error('No se pudo obtener el stream de respuesta')
+      }
+
+      while (true) {
+        const { done, value } = await reader.read()
+        
+        if (done) {
+          setProgress(prev => ({ ...prev, isActive: false }))
+          break
+        }
+
+        const chunk = decoder.decode(value)
+        const lines = chunk.split('\n')
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6))
+              
+              if (data.type === 'init') {
+                setProgress(prev => ({
+                  ...prev,
+                  total: data.total,
+                  isActive: true
+                }))
+              } else if (data.type === 'progress') {
+                setProgress(prev => ({
+                  ...prev,
+                  processed: data.processed,
+                  success: data.success,
+                  failed: data.failed
+                }))
+                
+                // Actualizar resultados en vivo
+                if (data.status === 'success') {
+                  setLiveResults(prev => ({
+                    ...prev,
+                    successTokens: [...prev.successTokens, data.currentToken]
+                  }))
+                } else if (data.status === 'error' && data.error) {
+                  setLiveResults(prev => ({
+                    ...prev,
+                    failTokens: [...prev.failTokens, data.error]
+                  }))
+                }
+              } else if (data.type === 'complete') {
+                setResult(data)
+                setProgress(prev => ({ ...prev, isActive: false }))
+              }
+            } catch (parseError) {
+              console.error('Error parsing stream data:', parseError)
+            }
+          }
+        }
+      }
+
     } catch (error) {
       console.error('Error:', error)
       setResult({ error: 'Error al enviar notificaciones' })
+      setProgress(prev => ({ ...prev, isActive: false }))
     } finally {
       setIsLoading(false)
     }
@@ -348,10 +440,157 @@ export default function Dashboard() {
               </>
             )}
           </button>
+
+          {/* Barra de progreso */}
+          {progress.isActive && (
+            <div className="progress-container" style={{
+              marginTop: '24px',
+              padding: '20px',
+              borderRadius: '8px',
+              background: 'var(--surface)',
+              border: '2px solid var(--primary)',
+              boxShadow: '0 4px 12px rgba(4, 28, 44, 0.1)'
+            }}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '12px'
+              }}>
+                <h4 style={{
+                  margin: 0,
+                  color: 'var(--primary)',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}>
+                  <Send size={18} />
+                  Enviando notificaciones...
+                </h4>
+                <span style={{
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  color: 'var(--on-surface)'
+                }}>
+                  {progress.processed} / {progress.total}
+                </span>
+              </div>
+
+              {/* Barra de progreso visual */}
+              <div style={{
+                width: '100%',
+                height: '8px',
+                background: 'var(--neutral)',
+                borderRadius: '4px',
+                overflow: 'hidden',
+                marginBottom: '16px'
+              }}>
+                <div style={{
+                  height: '100%',
+                  background: 'linear-gradient(90deg, var(--primary), var(--secondary))',
+                  width: `${progress.total > 0 ? (progress.processed / progress.total) * 100 : 0}%`,
+                  transition: 'width 0.3s ease-in-out',
+                  borderRadius: '4px'
+                }} />
+              </div>
+
+              {/* Estadísticas en tiempo real */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
+                gap: '12px'
+              }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  fontSize: '14px'
+                }}>
+                  <CheckCircle size={16} color="var(--success)" />
+                  <span style={{ color: 'var(--on-surface)' }}>
+                    <strong>{progress.success}</strong> exitosos
+                  </span>
+                </div>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  fontSize: '14px'
+                }}>
+                  <XCircle size={16} color="var(--error)" />
+                  <span style={{ color: 'var(--on-surface)' }}>
+                    <strong>{progress.failed}</strong> fallidos
+                  </span>
+                </div>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  fontSize: '14px'
+                }}>
+                  <Info size={16} color="var(--info)" />
+                  <span style={{ color: 'var(--on-surface)' }}>
+                    <strong>{Math.round((progress.processed / (progress.total || 1)) * 100)}%</strong> completado
+                  </span>
+                </div>
+              </div>
+
+              {/* Resultados en vivo - solo mostrar si hay fallos */}
+              {liveResults.failTokens.length > 0 && (
+                <details style={{ marginTop: '16px' }}>
+                  <summary style={{
+                    cursor: 'pointer',
+                    fontWeight: '600',
+                    color: 'var(--error)',
+                    fontSize: '14px',
+                    marginBottom: '8px'
+                  }}>
+                    Ver errores en tiempo real ({liveResults.failTokens.length})
+                  </summary>
+                  <div style={{
+                    maxHeight: '150px',
+                    overflowY: 'auto',
+                    background: 'var(--bizland-background)',
+                    borderRadius: '6px',
+                    padding: '8px',
+                    marginTop: '8px'
+                  }}>
+                    {liveResults.failTokens.slice(-5).map((error, idx) => (
+                      <div key={idx} style={{
+                        fontSize: '12px',
+                        color: 'var(--error)',
+                        padding: '4px 8px',
+                        marginBottom: '4px',
+                        background: 'rgba(239, 68, 68, 0.1)',
+                        borderRadius: '4px',
+                        fontFamily: 'monospace'
+                      }}>
+                        <div><strong>Token:</strong> {error.token?.substring(0, 20)}...</div>
+                        <div><strong>Error:</strong> {error.code} - {error.message}</div>
+                      </div>
+                    ))}
+                    {liveResults.failTokens.length > 5 && (
+                      <div style={{
+                        fontSize: '12px',
+                        color: 'var(--on-surface)',
+                        textAlign: 'center',
+                        padding: '4px',
+                        fontStyle: 'italic'
+                      }}>
+                        ... y {liveResults.failTokens.length - 5} errores más
+                      </div>
+                    )}
+                  </div>
+                </details>
+              )}
+            </div>
+          )}
         </form>
 
-        {/* Resultados */}
-        {result && (
+        {/* Resultados finales */}
+        {result && !progress.isActive && (
           <div style={{
             marginTop: '32px',
             padding: '20px',
@@ -453,6 +692,26 @@ export default function Dashboard() {
         @keyframes spin {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
+        }
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+        @keyframes slideIn {
+          from { 
+            opacity: 0; 
+            transform: translateY(-10px); 
+          }
+          to { 
+            opacity: 1; 
+            transform: translateY(0); 
+          }
+        }
+        .progress-container {
+          animation: slideIn 0.3s ease-out;
+        }
+        .live-error {
+          animation: slideIn 0.3s ease-out;
         }
       `}</style>
     </div>
