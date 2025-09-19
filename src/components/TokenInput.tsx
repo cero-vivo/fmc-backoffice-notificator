@@ -87,7 +87,7 @@ export default function TokenInput({ tokens, onTokensChange }: TokenInputProps) 
           style={{
             padding: '12px',
             background: inputValue.trim()
-              ? 'var(--primary)'
+              ? 'var(--on-secondary)'
               : 'var(--neutral)',
             color: inputValue.trim()
               ? 'var(--on-primary)'

@@ -98,22 +98,22 @@ export default function Dashboard() {
 
 	// Función para cerrar sesión
 	const handleLogout = async () => {
-			if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
-				try {
-					// Limpiar cualquier proceso en curso
-					if (abortController) {
-						abortController.abort()
-					}
-
-					// Eliminar la cookie de sesión
-					document.cookie = 'session=; path=/; max-age=0'
-
-					// Redirigir a login
-					window.location.href = '/login'
-				} catch (error) {
-					console.error('Error al cerrar sesión:', error)
+		if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+			try {
+				// Limpiar cualquier proceso en curso
+				if (abortController) {
+					abortController.abort()
 				}
+
+				// Eliminar la cookie de sesión
+				document.cookie = 'session=; path=/; max-age=0'
+
+				// Redirigir a login
+				window.location.href = '/login'
+			} catch (error) {
+				console.error('Error al cerrar sesión:', error)
 			}
+		}
 	}
 
 	// Función para limpiar tokens
@@ -563,10 +563,8 @@ export default function Dashboard() {
 						disabled={isLoading || tokens.length === 0}
 						style={{
 							background: (isLoading || tokens.length === 0)
-								? (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-									? '#23272f'
-									: '#d1d5db')
-								: 'hsl(217, 100.0%, 36.7%)',
+								? 'var(--neutral)'
+								: 'var(--on-secondary)',
 							color: 'white',
 							border: 'none',
 							padding: '16px 32px',
