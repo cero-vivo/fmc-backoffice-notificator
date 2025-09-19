@@ -2,7 +2,7 @@
 
 ¡Hola equipo!
 
-Con mucho cariño les comparto esta aplicación de notificaciones push desarrollada especialmente para el equipo móvil de Bizland. Espero que sea de gran utilidad.
+Con mucho cariño les comparto esta aplicación de notificaciones push que desarrolle especialmente para el equipo mobile de Bizland. Espero que sea de gran utilidad.
 
 **Por Luis Espinoza** 🥷
 
