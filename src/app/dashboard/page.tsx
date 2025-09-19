@@ -98,19 +98,22 @@ export default function Dashboard() {
 
 	// Función para cerrar sesión
 	const handleLogout = async () => {
-		if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
-			try {
-				// Limpiar cualquier proceso en curso
-				if (abortController) {
-					abortController.abort()
-				}
+			if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+				try {
+					// Limpiar cualquier proceso en curso
+					if (abortController) {
+						abortController.abort()
+					}
 
-				// Redirigir a logout
-				window.location.href = '/login'
-			} catch (error) {
-				console.error('Error al cerrar sesión:', error)
+					// Eliminar la cookie de sesión
+					document.cookie = 'session=; path=/; max-age=0'
+
+					// Redirigir a login
+					window.location.href = '/login'
+				} catch (error) {
+					console.error('Error al cerrar sesión:', error)
+				}
 			}
-		}
 	}
 
 	// Función para limpiar tokens
