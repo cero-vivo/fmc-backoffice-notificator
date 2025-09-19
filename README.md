@@ -94,6 +94,10 @@ Este proyecto está diseñado para crecer con el equipo.
 
 Espero que les sea muy útil y facilite el trabajo diario.
 
+### Contacto
+
+Si necesitan ayuda con la configuración o tienen preguntas sobre el código, no duden en contactarme. ¡Estoy aquí para apoyar! 
+
 ---
 
 **¡Que tengan excelentes desarrollos!** 
@@ -102,10 +106,5 @@ Espero que les sea muy útil y facilite el trabajo diario.
 **Luis Espinoza** 🥷 💙
 
 ---
-
-### Contacto
-
-Si necesitan ayuda con la configuración o tienen preguntas sobre el código, no duden en contactarme. ¡Estoy aquí para apoyar! 
-Luis Espinoza.
 
 *Made with 💙 for the Bizland Mobile Team*
