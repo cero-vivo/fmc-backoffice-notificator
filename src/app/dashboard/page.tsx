@@ -562,9 +562,9 @@ export default function Dashboard() {
 						type="submit"
 						disabled={isLoading || tokens.length === 0}
 						style={{
-											background: (isLoading || tokens.length === 0)
-												? 'var(--button-disabled)'
-												: 'var(--button-enabled)',
+							background: (isLoading || tokens.length === 0)
+								? 'var(--button-disabled)'
+								: 'var(--button-enabled)',
 							color: 'white',
 							border: 'none',
 							padding: '16px 32px',
@@ -912,6 +912,8 @@ export default function Dashboard() {
           animation: slideIn 0.3s ease-out;
         }
       `}</style>
+
+
 		</div>
 	)
 }

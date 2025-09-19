@@ -7,6 +7,12 @@ export async function POST(request: NextRequest) {
 
     // Usar configuración dinámica
     const config = getCurrentConfig()
+    if(!config.auth.username || !config.auth.password || config.auth.username?.length === 0 || config.auth.password?.length === 0) {
+       return NextResponse.json(
+        { error: 'Parece que aún no has configurado tus credenciales. Necesitas crear un archivo .env.local con tu usuario y contraseña, y recuerda agregar los datos cuenta de servicio de Firebase.' },
+        { status: 500 }
+      )
+    }
     if (username === config.auth.username && password === config.auth.password) {
       return NextResponse.json({ 
         success: true,

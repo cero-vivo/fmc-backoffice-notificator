@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,6 +49,15 @@ export default function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {children}
+        {/* Theme Toggle - Flotante en esquina inferior derecha */}
+			<div style={{
+				position: 'fixed',
+				bottom: '24px',
+				right: '24px',
+				zIndex: 1000
+			}}>
+				<ThemeToggle />
+			</div>
       </body>
     </html>
   );
