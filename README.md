@@ -18,7 +18,7 @@ Aplicación web para enviar notificaciones push a dispositivos móviles Android/
 bun install
 ```
 
-### 2. Variables de entorno
+### 2. Configura .env.local
 
 ```env.local
 # Configuración de ambiente
