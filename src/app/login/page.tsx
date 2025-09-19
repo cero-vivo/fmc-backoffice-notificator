@@ -27,9 +27,7 @@ export default function Login() {
       })
 
       if (response.ok) {
-        // Crear credenciales para BasicAuth
-        const credentials = btoa(`${username}:${password}`)
-        sessionStorage.setItem('auth', credentials)
+        document.cookie = `session=1; path=/; max-age=86400` // 1 día de sesión
         router.push('/dashboard')
       } else {
         const data = await response.json()
@@ -43,8 +41,8 @@ export default function Login() {
   }
 
   return (
-    <div style={{ 
-      minHeight: '100vh', 
+    <div style={{
+      minHeight: '100vh',
       background: 'var(--surface)',
       display: 'flex',
       alignItems: 'center',
@@ -85,9 +83,9 @@ export default function Login() {
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div>
-            <label style={{ 
-              display: 'block', 
-              marginBottom: '8px', 
+            <label style={{
+              display: 'block',
+              marginBottom: '8px',
               fontWeight: '600',
               color: 'var(--on-surface)',
               fontSize: '14px'
@@ -95,8 +93,8 @@ export default function Login() {
               Usuario:
             </label>
             <div style={{ position: 'relative' }}>
-              <User 
-                size={16} 
+              <User
+                size={16}
                 style={{
                   position: 'absolute',
                   left: '12px',
@@ -129,9 +127,9 @@ export default function Login() {
           </div>
 
           <div>
-            <label style={{ 
-              display: 'block', 
-              marginBottom: '8px', 
+            <label style={{
+              display: 'block',
+              marginBottom: '8px',
               fontWeight: '600',
               color: 'var(--on-surface)',
               fontSize: '14px'
@@ -139,8 +137,8 @@ export default function Login() {
               Contraseña:
             </label>
             <div style={{ position: 'relative' }}>
-              <Lock 
-                size={16} 
+              <Lock
+                size={16}
                 style={{
                   position: 'absolute',
                   left: '12px',
@@ -262,7 +260,7 @@ export default function Login() {
           </button>
         </form>
 
-      
+
       </div>
 
       <style jsx>{`
