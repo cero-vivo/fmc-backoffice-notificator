@@ -60,8 +60,8 @@ export default function Login() {
         border: '1px solid var(--neutral)'
       }}>
         {/* Logo y título */}
-        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <img src="/Bizland.png" alt="BIZLAND Logo" style={{ width: '220px', height: 'auto', objectFit: 'contain', marginBottom: '12px' }} />
+        <div style={{ textAlign: 'center', }}>
+          <img src="/Bizland.png" alt="BIZLAND Logo" style={{ width: '230px', height: 'auto', objectFit: 'contain', marginBottom: '12px' }} />
         </div>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
